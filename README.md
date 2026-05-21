@@ -18,8 +18,9 @@ HWP/HWPX로 된 한의학 원서를 AI가 읽기 좋은 Markdown 형태로 변�
 │   └── raw/                  # 사용자가 변환 전 파일을 복사해두는 작업 폴더
 ├── texts/                   # AI가 읽을 Markdown 결과물
 │   └── <slug>/
-│       ├── README.md        # 병합본 + 메타데이터
-│       ├── pages/           # rhwp가 만든 페이지별 Markdown
+│       ├── source.md        # AI가 참조할 canonical 전체 원문
+│       ├── README.md        # 사람이 보는 짧은 안내
+│       ├── metadata.json    # 변환 메타데이터
 │       └── *_assets/        # 추출 이미지
 ├── scripts/
 │   ├── bootstrap_rhwp.sh    # rhwp 클론/빌드
@@ -62,9 +63,10 @@ inbox/raw/
 
 1. 원본을 `sources/<slug>/`에 복사
 2. `rhwp export-markdown` 실행
-3. 페이지별 Markdown을 `texts/<slug>/pages/`에 저장
-4. 전체 병합본을 `texts/<slug>/README.md`에 생성
-5. 변환 메타데이터를 front matter와 `metadata.json`으로 기록
+3. `rhwp`의 페이지별 중간 산출물을 하나로 병합
+4. 전체 원문을 `texts/<slug>/source.md`에 저장
+5. 사람이 볼 안내를 `texts/<slug>/README.md`에 생성
+6. 변환 메타데이터를 front matter와 `metadata.json`으로 기록
 
 GitHub까지 올리려면:
 
@@ -94,6 +96,7 @@ cp skills/hwp-github-ingest/SKILL.md "$CODEX_HOME/skills/hwp-github-ingest/SKILL
 ## Markdown 원칙
 
 - 원문을 먼저 보존하고, 정규화/교정은 별도 커밋으로 진행합니다.
-- 페이지 경계는 병합본에 `## Page N`으로 남깁니다.
-- 표, 이미지, 주석처럼 변환 손실 위험이 있는 요소는 원본과 페이지별 파일을 함께 추적합니다.
+- HWP 페이지 경계는 의미 단위가 아니므로 별도 파일로 보존하지 않습니다.
+- 추적이 필요할 때를 위해 `source.md`에 `<!-- rhwp-page: N -->` 주석만 남깁니다.
+- 표, 이미지, 주석처럼 변환 손실 위험이 있는 요소는 원본 파일과 메타데이터를 함께 추적합니다.
 - AI 후처리는 원문 Markdown 위에 덮어쓰기보다 별도 파일 또는 별도 브랜치에서 수행합니다.

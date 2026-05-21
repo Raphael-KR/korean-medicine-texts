@@ -67,23 +67,24 @@ def clean_dir(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
 
-def move_markdown_output(raw_dir: Path, pages_dir: Path) -> list[Path]:
-    pages_dir.mkdir(parents=True, exist_ok=True)
-    page_files = sorted(raw_dir.glob("*.md"))
+def collect_markdown_pages(raw_dir: Path) -> list[tuple[str, str]]:
+    pages = []
+    for page in sorted(raw_dir.glob("*.md")):
+        text = page.read_text(encoding="utf-8", errors="replace").strip()
+        pages.append((page.name, text))
+    return pages
+
+
+def move_assets(raw_dir: Path, text_dir: Path) -> list[str]:
     moved = []
-    for page in page_files:
-        target = pages_dir / page.name
-        shutil.move(str(page), str(target))
-        text = target.read_text(encoding="utf-8", errors="replace")
-        text = re.sub(r"\]\(([^)]+_assets/[^)]+)\)", r"](../\1)", text)
-        target.write_text(text, encoding="utf-8")
-        moved.append(target)
     for asset_dir in sorted(raw_dir.glob("*_assets")):
-        shutil.move(str(asset_dir), str(pages_dir.parent / asset_dir.name))
+        target = text_dir / asset_dir.name
+        shutil.move(str(asset_dir), str(target))
+        moved.append(target.name)
     return moved
 
 
-def combined_markdown(title: str, source_rel: str, metadata: dict, pages: list[Path], base: Path) -> str:
+def source_markdown(title: str, source_rel: str, metadata: dict, pages: list[tuple[str, str]]) -> str:
     front_matter = {
         "title": title,
         "source": source_rel,
@@ -100,18 +101,27 @@ def combined_markdown(title: str, source_rel: str, metadata: dict, pages: list[P
     lines.append(f"- Converter: `{metadata['converter']}`")
     lines.append("")
 
-    for idx, page in enumerate(pages, start=1):
-        rel_page = page.relative_to(base).as_posix()
-        body = page.read_text(encoding="utf-8", errors="replace").strip()
-        body = body.replace("](../", "](")
-        lines.append(f"## Page {idx}")
+    for idx, (filename, body) in enumerate(pages, start=1):
+        lines.append(f"<!-- rhwp-page: {idx}; original-file: {filename} -->")
         lines.append("")
-        lines.append(f"Source page file: [{page.name}]({rel_page})")
+        lines.append(body)
         lines.append("")
-        if body:
-            lines.append(body)
-            lines.append("")
     return "\n".join(lines).rstrip() + "\n"
+
+
+def readme_markdown(title: str, source_rel: str, metadata: dict) -> str:
+    source_path = metadata["source_path"]
+    page_count = metadata["page_count"]
+    return f"""# {title}
+
+- Canonical Markdown: [source.md](source.md)
+- Original HWP/HWPX: [{Path(source_rel).name}]({source_rel})
+- Source archive path: `{source_path}`
+- Source SHA-256: `{metadata["source_sha256"]}`
+- Converted at: `{metadata["converted_at"]}`
+- Converter: `{metadata["converter"]}`
+- rhwp page markers: {page_count}
+"""
 
 
 def github_base_url() -> str | None:
@@ -160,18 +170,19 @@ def main() -> int:
 
     rhwp = resolve_rhwp(args.rhwp_bin)
     slug = args.slug or slugify(input_path)
-    title = args.title or input_path.stem
+    title = unicodedata.normalize("NFC", args.title or input_path.stem)
 
     source_dir = ROOT / "sources" / slug
     text_dir = ROOT / "texts" / slug
     raw_dir = text_dir / ".rhwp-raw"
-    pages_dir = text_dir / "pages"
     source_dir.mkdir(parents=True, exist_ok=True)
     clean_dir(text_dir)
     raw_dir.mkdir(parents=True, exist_ok=True)
 
-    source_target = source_dir / input_path.name
-    shutil.copy2(input_path, source_target)
+    source_name = unicodedata.normalize("NFC", input_path.name)
+    source_target = source_dir / source_name
+    if input_path != source_target:
+        shutil.copy2(input_path, source_target)
 
     info = run([str(rhwp), "info", str(source_target)], check=False)
     export = run([str(rhwp), "export-markdown", str(source_target), "-o", str(raw_dir)], check=False)
@@ -180,7 +191,8 @@ def main() -> int:
         sys.stderr.write(export.stderr)
         return export.returncode
 
-    pages = move_markdown_output(raw_dir, pages_dir)
+    pages = collect_markdown_pages(raw_dir)
+    asset_dirs = move_assets(raw_dir, text_dir)
     shutil.rmtree(raw_dir, ignore_errors=True)
     if not pages:
         raise SystemExit("rhwp did not produce Markdown pages")
@@ -192,6 +204,8 @@ def main() -> int:
         "source_sha256": sha256_file(source_target),
         "converted_at": datetime.now(timezone.utc).isoformat(),
         "converter": f"rhwp ({rhwp})",
+        "page_count": len(pages),
+        "asset_dirs": asset_dirs,
         "rhwp_info_stdout": info.stdout.strip(),
         "rhwp_info_stderr": info.stderr.strip(),
     }
@@ -199,10 +213,16 @@ def main() -> int:
     metadata_path = text_dir / "metadata.json"
     metadata_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    readme_path = text_dir / "README.md"
     source_rel = os.path.relpath(source_target, text_dir).replace(os.sep, "/")
+    source_md_path = text_dir / "source.md"
+    source_md_path.write_text(
+        source_markdown(title, source_rel, metadata, pages),
+        encoding="utf-8",
+    )
+
+    readme_path = text_dir / "README.md"
     readme_path.write_text(
-        combined_markdown(title, source_rel, metadata, pages, text_dir),
+        readme_markdown(title, source_rel, metadata),
         encoding="utf-8",
     )
 
@@ -218,8 +238,8 @@ def main() -> int:
     if args.push:
         run(["git", "push", "-u", "origin", current_branch()])
 
-    print(f"Markdown archive: {readme_path.relative_to(ROOT)}")
-    url = github_blob_url(readme_path)
+    print(f"Markdown archive: {source_md_path.relative_to(ROOT)}")
+    url = github_blob_url(source_md_path)
     if url:
         print(f"GitHub URL: {url}")
     else:

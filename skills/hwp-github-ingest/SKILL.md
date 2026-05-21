@@ -16,7 +16,7 @@ Use this skill when the user gives an HWP/HWPX file and wants it converted into 
 ```
 
 4. Return:
-   - the generated `texts/<slug>/README.md` path
+   - the generated `texts/<slug>/source.md` path
    - the GitHub URL printed by the script
    - any warnings from `rhwp`
 
