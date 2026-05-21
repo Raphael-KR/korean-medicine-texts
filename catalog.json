@@ -62,7 +62,7 @@
       "rights_status": "public_domain_classical_text",
       "license": "Public Domain Mark 1.0",
       "has_modern_input_notes": true,
-      "modern_input_note": "원본 파일 앞부분에 1993년 조광래의 머릿말, 1995년 진주표의 교정판 안내, 1997년 편집본 범례와 편집주가 있었으나, source.md에서는 고전 원문만 남기고 제거함",
+      "modern_input_note": "원본 파일 앞부분의 현대 입력/교정 안내와 본문 중 현대 교정주·음훈 각주는 canonical source.md에서 제거하고, 고전 원문만 남김",
       "quality_status": "raw_converted",
       "segment_count": 81
     },
@@ -78,7 +78,7 @@
       "rights_status": "public_domain_classical_text",
       "license": "Public Domain Mark 1.0",
       "has_modern_input_notes": true,
-      "modern_input_note": "원본 파일 앞부분에 1993년 조광래의 머릿말, 1995년 진주표의 교정판 안내, 1997년 편집본 범례와 편집주가 있었으나, source.md에서는 고전 원문만 남기고 제거함",
+      "modern_input_note": "원본 파일 앞부분의 현대 입력/교정 안내와 본문 중 현대 교정주·음훈 각주는 canonical source.md에서 제거하고, 고전 원문만 남김",
       "quality_status": "raw_converted",
       "segment_count": 81
     }

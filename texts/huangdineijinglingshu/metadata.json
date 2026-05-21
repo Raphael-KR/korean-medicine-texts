@@ -8,9 +8,9 @@
   "source_path": "sources/huangdineijingsuwen/황제내경소문.hwpx",
   "source_format": "hwpx",
   "source_sha256": "51184bbee08bc8e07afaecd82619354ce5e8fc8f0faa92fa043e7968f052526f",
-  "source_note": "원본 HWPX에는 黃帝內經素問과 黃帝內經靈樞가 함께 포함되어 있으며, 본 항목은 해당 원본에서 해당 편만 분리한 것임",
+  "source_note": "원본 HWPX에는 黃帝內經素問과 黃帝內經靈樞가 함께 포함되어 있으며, 본 항목은 해당 원본에서 해당 편만 분리한 것임. canonical source.md는 AI 참조용 원문 코퍼스로 정리되어, 원본의 현대 서두와 각주/미주를 제외함.",
   "has_modern_input_notes": true,
-  "modern_input_note": "원본 파일 앞부분에 1993년 조광래의 머릿말, 1995년 진주표의 교정판 안내, 1997년 편집본 범례와 편집주가 있었으나, source.md에서는 고전 원문만 남기고 제거함",
+  "modern_input_note": "원본 파일 앞부분의 현대 입력/교정 안내와 본문 중 현대 교정주·음훈 각주는 canonical source.md에서 제거하고, 고전 원문만 남김",
   "rights_status": "public_domain_classical_text",
   "license": "Public Domain Mark 1.0",
   "quality_status": "raw_converted",
@@ -20,12 +20,12 @@
     "reasons": [],
     "metrics": {
       "segments": 81,
-      "nonspace_chars": 97099,
-      "readable_text_chars": 79164,
-      "cjk_or_hangul_chars": 74001,
+      "nonspace_chars": 80236,
+      "readable_text_chars": 66863,
+      "cjk_or_hangul_chars": 66719,
       "object_placeholder_chars": 0,
       "object_placeholder_ratio": 0.0,
-      "readable_char_ratio": 0.815292
+      "readable_char_ratio": 0.833329
     },
     "thresholds": {
       "min_text_chars": 500,

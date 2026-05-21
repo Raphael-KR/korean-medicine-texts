@@ -12,7 +12,7 @@
 - Rights status: `public_domain_classical_text`
 - License: `Public Domain Mark 1.0`
 - Contains modern input notes: `True`
-- Modern input note: 원본 파일 앞부분에 1993년 조광래의 머릿말, 1995년 진주표의 교정판 안내, 1997년 편집본 범례와 편집주가 있었으나, source.md에서는 고전 원문만 남기고 제거함
+- Modern input note: 원본 파일 앞부분의 현대 입력/교정 안내와 본문 중 현대 교정주·음훈 각주는 canonical source.md에서 제거하고, 고전 원문만 남김
 - Quality status: `raw_converted`
 - Converted at: `2026-05-21T15:21:16.029154+00:00`
 - Conversion tool: `rhwp v0.7.12`
