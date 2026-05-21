@@ -1,0 +1,6 @@
+# 수록 문헌 목록
+
+| ID | 서명 | 한자 | 저자 | 시대 | 품질 | 원문 | Markdown |
+|---|---|---|---|---|---|---|---|
+| donguibogam | 동의보감 | 東醫寶鑑 | 허준 | 조선 | raw_converted | [동의보감원문.hwp](sources/donguibogam/동의보감원문.hwp) | [source.md](texts/donguibogam/source.md) |
+| donguisusebowon | 동의수세보원 | 東醫壽世保元 | 이제마 | 조선 | raw_converted | [동의수세보원.hwp](sources/donguisusebowon/동의수세보원.hwp) | [source.md](texts/donguisusebowon/source.md) |

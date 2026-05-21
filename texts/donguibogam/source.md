@@ -1,16 +1,20 @@
 ---
-title: "동의보감원문"
-source: "../../sources/동의보감원문/동의보감원문.hwp"
+id: "donguibogam"
+title: "동의보감"
+title_hanja: "東醫寶鑑"
+source: "../../sources/donguibogam/동의보감원문.hwp"
 source_sha256: "e3fbaf639415bef8edc499782640da9c6c25b492a1fb94cae27c2cd1f10eda9b"
-converted_at: "2026-05-21T12:51:29.279992+00:00"
-converter: "rhwp (/Users/raphael/Documents/한의학 원서 깃허브/vendor/rhwp/target/release/rhwp)"
+converted_at: "2026-05-21T13:05:33.734566+00:00"
+conversion_tool: "rhwp v0.7.12"
+license: "Public Domain Mark 1.0"
 page_count: 724
 ---
 
-# 동의보감원문
+# 동의보감
 
-- Source: [동의보감원문.hwp](../../sources/동의보감원문/동의보감원문.hwp)
-- Converter: `rhwp (/Users/raphael/Documents/한의학 원서 깃허브/vendor/rhwp/target/release/rhwp)`
+- Source: [동의보감원문.hwp](../../sources/donguibogam/동의보감원문.hwp)
+- License: `Public Domain Mark 1.0`
+- Conversion tool: `rhwp v0.7.12`
 
 <!-- rhwp-page: 1; original-file: 동의보감원문_001.md -->
 

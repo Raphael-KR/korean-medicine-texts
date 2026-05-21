@@ -1,102 +1,84 @@
-# 한의학 원서 Markdown 아카이브
+# 한의학 고전 원문 AI Markdown 아카이브
 
-HWP/HWPX로 된 한의학 원서를 AI가 읽기 좋은 Markdown 형태로 변환해 GitHub에 보관하는 프로젝트입니다.
+저작권이 소실된 한의학 고전 원문을 AI가 읽기 좋은 Markdown 형태로 공개 배포하는 학술 아카이브입니다.
 
-## 목표
+이 저장소는 특정 개인의 작업 폴더가 아니라, 불특정다수의 한의학자, 연구자, 개발자, AI 도구가 함께 참조할 수 있는 공개 원문 데이터셋을 목표로 합니다.
 
-- 원본 HWP/HWPX 파일을 온프레미스 환경에서 변환합니다.
-- 변환기는 [Raphael-KR/rhwp](https://github.com/Raphael-KR/rhwp)의 `export-markdown` CLI를 사용합니다.
-- Markdown, 이미지 asset, 원본 파일, 변환 메타데이터를 한 묶음으로 저장합니다.
-- Codex 스킬을 통해 “파일 전달 → 변환 → GitHub 업로드 → 링크 반환” 흐름을 자동화합니다.
+## 수록 원칙
 
-## 저장 구조
+이 저장소에는 **저작권이 소실된 고전 원문**만 수록합니다.
 
-```text
-.
-├── sources/                 # 원본 HWP/HWPX 보관
-├── inbox/
-│   └── raw/                  # 사용자가 변환 전 파일을 복사해두는 작업 폴더
-├── texts/                   # AI가 읽을 Markdown 결과물
-│   └── <slug>/
-│       ├── source.md        # AI가 참조할 canonical 전체 원문
-│       ├── README.md        # 사람이 보는 짧은 안내
-│       ├── metadata.json    # 변환 메타데이터
-│       └── *_assets/        # 추출 이미지
-├── scripts/
-│   ├── bootstrap_rhwp.sh    # rhwp 클론/빌드
-│   └── ingest_hwp.py        # 변환/정리/Git 작업
-└── skills/
-    └── hwp-github-ingest/   # Codex용 스킬 초안
-```
+다음 자료는 이 저장소의 대상이 아닙니다.
 
-## 1. rhwp 온프레미스 구축
+- 현대 출판사의 교정본
+- 현대인이 입력/편집한 저작권 보호 입력본
+- 역주본, 번역본, 해설본
+- 현대 논문, 교재, 강의자료
+- 배포 권한이 불명확한 HWP/HWPX 파일
 
-Rust toolchain이 설치된 머신에서:
+HWP/HWPX 원본도 공개 배포합니다. 따라서 기여자는 원본 파일 자체도 공개 배포 가능한 자료인지 확인해야 합니다.
 
-```bash
-./scripts/bootstrap_rhwp.sh
-```
+## 수록 문헌
 
-기본값은 `vendor/rhwp`에 `Raphael-KR/rhwp`를 클론하고 release 바이너리를 빌드합니다. 빌드 결과는 `vendor/rhwp/target/release/rhwp`입니다.
+전체 목록은 [CATALOG.md](CATALOG.md)와 [catalog.json](catalog.json)을 봐 주세요.
 
-이미 빌드된 `rhwp`가 있다면 환경변수로 지정할 수 있습니다.
+현재 수록:
 
-```bash
-export RHWP_BIN=/path/to/rhwp
-```
+- [동의보감](texts/donguibogam/source.md)
+- [동의수세보원](texts/donguisusebowon/source.md)
 
-## 2. HWP/HWPX 변환
-
-사용자는 변환할 파일을 먼저 여기에 복사합니다.
+## 데이터 구조
 
 ```text
-inbox/raw/
+texts/
+  <stable-id>/
+    README.md       # 문헌별 안내
+    source.md       # AI와 사람이 참조할 canonical Markdown 원문
+    metadata.json   # 서지, 권리, 변환, 품질 메타데이터
+
+sources/
+  <stable-id>/
+    <original>.hwp  # 공개 배포 가능한 원본 HWP/HWPX
+
+catalog.json        # 기계가 읽기 좋은 전체 목록
+CATALOG.md          # 사람이 읽기 좋은 전체 목록
 ```
 
-단일 파일 변환:
+폴더명은 한글 책 제목이 아니라 안정적인 ASCII ID를 사용합니다. 예: `donguibogam`, `donguisusebowon`.
 
-```bash
-./scripts/ingest_hwp.py /path/to/원서.hwp
-```
+## AI 활용 방식
 
-명령은 다음 작업을 수행합니다.
+각 문헌의 기본 참조 파일은 `texts/<stable-id>/source.md`입니다.
 
-1. 원본을 `sources/<slug>/`에 복사
-2. `rhwp export-markdown` 실행
-3. `rhwp`의 페이지별 중간 산출물을 하나로 병합
-4. 전체 원문을 `texts/<slug>/source.md`에 저장
-5. 사람이 볼 안내를 `texts/<slug>/README.md`에 생성
-6. 변환 메타데이터를 front matter와 `metadata.json`으로 기록
+`source.md`는 HWP 페이지별 파일을 따로 보존하지 않고 하나의 원문 Markdown으로 합친 파일입니다. HWP 조판 페이지는 의미 단위가 아니므로 기본 분할 기준으로 쓰지 않습니다. 다만 변환 추적을 위해 `<!-- rhwp-page: N -->` 주석은 남깁니다.
 
-GitHub까지 올리려면:
+향후에는 `chunks/`를 추가해 권, 편, 장, 조문, 처방명 같은 의미 단위 분할을 제공할 예정입니다.
 
-```bash
-./scripts/ingest_hwp.py /path/to/원서.hwp --commit --push
-```
+## 품질 상태
 
-`--push`는 현재 브랜치를 origin으로 push하고, origin URL을 기준으로 GitHub blob 링크를 출력합니다.
+각 문헌의 `metadata.json`에는 `quality_status`가 있습니다.
 
-`inbox/raw/`에 들어 있는 모든 파일을 한 번에 처리하려면:
+- `raw_converted`: HWP에서 Markdown으로 자동 변환한 원문
+- `reviewed`: 사람이 원문 대조를 일부 또는 전체 수행
+- `corrected`: 오류 교정이 반영된 상태
 
-```bash
-./scripts/ingest_folder.py --commit --push
-```
+현재 자료는 기본적으로 `raw_converted`입니다. 연구나 임상 판단에 사용할 때는 반드시 원문 대조가 필요합니다.
 
-처리된 파일은 `inbox/processed/`로 이동합니다. 변환 실패 파일은 원래 위치에 남습니다.
+## 기여 방법
 
-## 3. Codex 스킬 설치
+기여 방법은 두 가지입니다.
 
-스킬 초안은 `skills/hwp-github-ingest/SKILL.md`에 있습니다. Codex에서 이 저장소 작업을 반복할 때 해당 스킬을 `$CODEX_HOME/skills`로 복사해 사용할 수 있습니다.
+1. 비개발자: 공개 배포 가능한 HWP/HWPX 원문 파일과 서지 정보를 운영자에게 전달합니다.
+2. GitHub 사용자: 직접 변환 결과를 추가하고 Pull Request를 보냅니다.
 
-```bash
-mkdir -p "$CODEX_HOME/skills/hwp-github-ingest"
-cp skills/hwp-github-ingest/SKILL.md "$CODEX_HOME/skills/hwp-github-ingest/SKILL.md"
-```
+자세한 절차는 [CONTRIBUTING.md](CONTRIBUTING.md)를 참고해 주세요.
 
-## Markdown 원칙
+## 권리와 라이선스
 
-- 원문을 먼저 보존하고, 정규화/교정은 별도 커밋으로 진행합니다.
-- HWP 페이지 경계는 의미 단위가 아니므로 별도 파일로 보존하지 않습니다.
-- 추적이 필요할 때를 위해 `source.md`에 `<!-- rhwp-page: N -->` 주석만 남깁니다.
-- 표, 이미지, 주석처럼 변환 손실 위험이 있는 요소는 원본 파일과 메타데이터를 함께 추적합니다.
-- AI 후처리는 원문 Markdown 위에 덮어쓰기보다 별도 파일 또는 별도 브랜치에서 수행합니다.
+이 저장소는 저작권이 소실된 고전 원문만 수록합니다. 자세한 기준은 [DATA_LICENSE.md](DATA_LICENSE.md)를 참고해 주세요.
+
+## 변환 도구
+
+HWP/HWPX 변환에는 [Raphael-KR/rhwp](https://github.com/Raphael-KR/rhwp)의 `export-markdown` 기능을 사용합니다.
+
+운영용 스크립트는 [scripts](scripts) 아래에 있습니다. 공개 사용자는 보통 이 스크립트를 직접 사용할 필요가 없습니다.

@@ -2,6 +2,7 @@ vendor/rhwp/
 inbox/raw/*
 inbox/processed/*
 !inbox/raw/.gitkeep
+!inbox/raw/manifest.example.json
 !inbox/processed/.gitkeep
 .DS_Store
 __pycache__/

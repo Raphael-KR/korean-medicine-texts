@@ -1,16 +1,20 @@
 ---
+id: "donguisusebowon"
 title: "동의수세보원"
-source: "../../sources/동의수세보원/동의수세보원.hwp"
+title_hanja: "東醫壽世保元"
+source: "../../sources/donguisusebowon/동의수세보원.hwp"
 source_sha256: "f6b806bd4e6ac9a95a2e8037696eed7acad74f518b1437491154e3d33a3bd0d8"
-converted_at: "2026-05-21T12:51:29.477734+00:00"
-converter: "rhwp (/Users/raphael/Documents/한의학 원서 깃허브/vendor/rhwp/target/release/rhwp)"
+converted_at: "2026-05-21T13:05:48.107596+00:00"
+conversion_tool: "rhwp v0.7.12"
+license: "Public Domain Mark 1.0"
 page_count: 93
 ---
 
 # 동의수세보원
 
-- Source: [동의수세보원.hwp](../../sources/동의수세보원/동의수세보원.hwp)
-- Converter: `rhwp (/Users/raphael/Documents/한의학 원서 깃허브/vendor/rhwp/target/release/rhwp)`
+- Source: [동의수세보원.hwp](../../sources/donguisusebowon/동의수세보원.hwp)
+- License: `Public Domain Mark 1.0`
+- Conversion tool: `rhwp v0.7.12`
 
 <!-- rhwp-page: 1; original-file: 동의수세보원_001.md -->
 

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "description": "Public-domain Korean medicine source texts converted to AI-readable Markdown.",
+  "texts": [
+    {
+      "id": "donguibogam",
+      "title_ko": "동의보감",
+      "title_hanja": "東醫寶鑑",
+      "author": "허준",
+      "era": "조선",
+      "source_path": "sources/donguibogam/동의보감원문.hwp",
+      "markdown_path": "texts/donguibogam/source.md",
+      "rights_status": "public_domain_classical_text",
+      "license": "Public Domain Mark 1.0",
+      "quality_status": "raw_converted",
+      "page_count": 724
+    },
+    {
+      "id": "donguisusebowon",
+      "title_ko": "동의수세보원",
+      "title_hanja": "東醫壽世保元",
+      "author": "이제마",
+      "era": "조선",
+      "source_path": "sources/donguisusebowon/동의수세보원.hwp",
+      "markdown_path": "texts/donguisusebowon/source.md",
+      "rights_status": "public_domain_classical_text",
+      "license": "Public Domain Mark 1.0",
+      "quality_status": "raw_converted",
+      "page_count": 93
+    }
+  ]
+}
