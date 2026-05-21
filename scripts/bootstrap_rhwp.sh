@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-RHWP_REPO="${RHWP_REPO:-https://github.com/Raphael-KR/rhwp.git}"
+RHWP_REPO="${RHWP_REPO:-https://github.com/edwardkim/rhwp.git}"
 RHWP_DIR="${RHWP_DIR:-vendor/rhwp}"
 
 if ! command -v git >/dev/null 2>&1; then

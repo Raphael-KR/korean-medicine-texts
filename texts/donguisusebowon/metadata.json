@@ -9,6 +9,8 @@
   "source_format": "hwpx",
   "source_sha256": "25434bb1d076ad11c8070022131db40df8724070140503fe5183629529f9374f",
   "source_note": "한컴오피스에서 HWP 원본을 HWPX로 변환한 공개 배포 가능 고전 원문 파일",
+  "has_modern_input_notes": true,
+  "modern_input_note": "1994년 박윤희의 입력 경위, 사용 기호, 원문 배열 방식, 1995년 황덕연의 재교정/편집 안내가 포함되어 있음",
   "rights_status": "public_domain_classical_text",
   "license": "Public Domain Mark 1.0",
   "quality_status": "raw_converted",

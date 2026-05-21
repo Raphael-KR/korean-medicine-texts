@@ -67,6 +67,8 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 
 현재 자료는 기본적으로 `raw_converted`입니다. 연구나 임상 판단에 사용할 때는 반드시 원문 대조가 필요합니다.
 
+일부 파일에는 고전 원문 외에 현대 입력자가 남긴 "일러두기", 입력 방식 설명, 기호 설명 등이 포함될 수 있습니다. 이런 경우 `metadata.json`의 `has_modern_input_notes`와 `modern_input_note`에 별도 표시합니다.
+
 ## 기여 방법
 
 기여 방법은 두 가지입니다.
@@ -82,6 +84,6 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 
 ## 변환 도구
 
-HWP/HWPX 변환에는 [Raphael-KR/rhwp](https://github.com/Raphael-KR/rhwp)의 `export-markdown` 기능을 사용합니다. DOC/DOCX는 운영 환경의 `textutil`을 통해 텍스트로 추출하고, TXT/MD는 그대로 수집합니다.
+HWP/HWPX 변환에는 [edwardkim/rhwp](https://github.com/edwardkim/rhwp)의 `export-markdown` 기능을 사용합니다. 운영 환경에서는 필요에 따라 fork를 사용할 수 있으나, 이 프로젝트 문서에서는 원본 프로젝트를 기준으로 표시합니다. DOC/DOCX는 운영 환경의 `textutil`을 통해 텍스트로 추출하고, TXT/MD는 그대로 수집합니다.
 
 운영용 스크립트는 [scripts](scripts) 아래에 있습니다. 공개 사용자는 보통 이 스크립트를 직접 사용할 필요가 없습니다.

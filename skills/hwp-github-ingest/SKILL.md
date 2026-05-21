@@ -8,7 +8,7 @@ Use this skill when the user gives a public-domain classical source text file an
 2. Ensure required converters are available:
    - Prefer `RHWP_BIN` if set.
    - For HWP/HWPX, otherwise use `vendor/rhwp/target/release/rhwp`.
-   - If HWP/HWPX support is missing, run `./scripts/bootstrap_rhwp.sh`.
+   - If HWP/HWPX support is missing, run `./scripts/bootstrap_rhwp.sh`, which defaults to the upstream `edwardkim/rhwp` repository.
    - For DOC/DOCX, use macOS `textutil`.
 3. Run ingestion:
 

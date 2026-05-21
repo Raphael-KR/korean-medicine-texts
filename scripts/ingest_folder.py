@@ -63,6 +63,7 @@ def main() -> int:
             "author": "--author",
             "era": "--era",
             "source_note": "--source-note",
+            "modern_input_note": "--modern-input-note",
             "rights_status": "--rights-status",
             "license": "--license",
             "quality_status": "--quality-status",
@@ -71,6 +72,8 @@ def main() -> int:
             value = item.get(key)
             if value:
                 cmd.extend([option, str(value)])
+        if item.get("has_modern_input_notes"):
+            cmd.append("--has-modern-input-notes")
         if args.rhwp_bin:
             cmd.extend(["--rhwp-bin", args.rhwp_bin])
         print(f"Converting: {path.name}")

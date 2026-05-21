@@ -23,6 +23,8 @@
 - `rights_status`: 권리 상태
 - `license`: 공개 표시 또는 라이선스
 - `source_note`: 원본 파일의 출처 또는 제공 경위
+- `has_modern_input_notes`: 현대 입력 안내문, 입력 방식 설명, 기호 설명 등이 포함되어 있는지 여부
+- `modern_input_note`: 현대 입력 안내문이 포함된 경우 그 범위와 성격
 - `quality_status`: 변환 및 검수 상태
 
 기본값은 다음과 같습니다.
@@ -31,6 +33,8 @@
 {
   "rights_status": "public_domain_classical_text",
   "license": "Public Domain Mark 1.0",
+  "has_modern_input_notes": false,
+  "modern_input_note": "",
   "quality_status": "raw_converted"
 }
 ```

@@ -9,6 +9,8 @@
   "source_format": "hwpx",
   "source_sha256": "f1379f4a539f3d2be98203f5a728695ba38f04da75595ad469851fc93cc05630",
   "source_note": "한컴오피스에서 HWP 원본을 HWPX로 변환한 공개 배포 가능 고전 원문 파일",
+  "has_modern_input_notes": false,
+  "modern_input_note": "",
   "rights_status": "public_domain_classical_text",
   "license": "Public Domain Mark 1.0",
   "quality_status": "raw_converted",

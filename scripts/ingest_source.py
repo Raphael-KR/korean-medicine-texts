@@ -298,6 +298,7 @@ def source_markdown(title: str, source_rel: str, metadata: dict, pages: list[tup
 def readme_markdown(title: str, source_rel: str, metadata: dict) -> str:
     source_path = metadata["source_path"]
     segment_count = metadata["segment_count"]
+    modern_note = metadata.get("modern_input_note") or "없음"
     return f"""# {title}
 
 - Canonical Markdown: [source.md](source.md)
@@ -311,6 +312,8 @@ def readme_markdown(title: str, source_rel: str, metadata: dict) -> str:
 - Source SHA-256: `{metadata["source_sha256"]}`
 - Rights status: `{metadata["rights_status"]}`
 - License: `{metadata["license"]}`
+- Contains modern input notes: `{metadata.get("has_modern_input_notes", False)}`
+- Modern input note: {modern_note}
 - Quality status: `{metadata["quality_status"]}`
 - Converted at: `{metadata["converted_at"]}`
 - Conversion tool: `{metadata["conversion_tool"]}`
@@ -331,6 +334,8 @@ def catalog_entry(metadata: dict) -> dict:
         "markdown_path": f"texts/{metadata['id']}/source.md",
         "rights_status": metadata["rights_status"],
         "license": metadata["license"],
+        "has_modern_input_notes": metadata.get("has_modern_input_notes", False),
+        "modern_input_note": metadata.get("modern_input_note", ""),
         "quality_status": metadata["quality_status"],
         "segment_count": metadata.get("segment_count", metadata.get("page_count")),
     }
@@ -426,6 +431,16 @@ def main() -> int:
     parser.add_argument("--era", default="", help="Historical era or publication period, if known")
     parser.add_argument("--source-note", default="", help="Short provenance note for the source file")
     parser.add_argument(
+        "--has-modern-input-notes",
+        action="store_true",
+        help="Mark that source.md includes modern input/editorial guide notes in addition to the classical text",
+    )
+    parser.add_argument(
+        "--modern-input-note",
+        default="",
+        help="Short description of modern input/editorial guide notes included in the converted source",
+    )
+    parser.add_argument(
         "--rights-status",
         default="public_domain_classical_text",
         help="Rights status. This archive accepts only public-domain classical source texts.",
@@ -508,6 +523,8 @@ def main() -> int:
         "source_format": input_path.suffix.lower().lstrip("."),
         "source_sha256": sha256_file(source_target),
         "source_note": unicodedata.normalize("NFC", args.source_note),
+        "has_modern_input_notes": args.has_modern_input_notes,
+        "modern_input_note": unicodedata.normalize("NFC", args.modern_input_note),
         "rights_status": args.rights_status,
         "license": args.license,
         "quality_status": args.quality_status if quality_report.passed else quality_report.status,
