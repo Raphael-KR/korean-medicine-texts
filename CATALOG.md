@@ -4,3 +4,4 @@
 |---|---|---|---|---|---|---|---|---|---|
 | donguibogam | 동의보감 | 東醫寶鑑 | 허준 | 조선 | hwpx | raw_converted | 737 | [동의보감원문.hwpx](sources/donguibogam/동의보감원문.hwpx) | [source.md](texts/donguibogam/source.md) |
 | donguisusebowon | 동의수세보원 | 東醫壽世保元 | 이제마 | 조선 | hwpx | raw_converted | 95 | [동의수세보원.hwpx](sources/donguisusebowon/동의수세보원.hwpx) | [source.md](texts/donguisusebowon/source.md) |
+| gyeongakjeonseo | 경악전서 | 景岳全書 |  |  | hwpx | raw_converted | 873 | [경악전서.hwpx](sources/gyeongakjeonseo/경악전서.hwpx) | [source.md](texts/gyeongakjeonseo/source.md) |
