@@ -33,6 +33,70 @@ def current_branch() -> str:
     return result.stdout.strip() or "master"
 
 
+def add_ingest_options(cmd: list[str], item: dict, rhwp_bin: str | None) -> None:
+    option_map = {
+        "id": "--id",
+        "source_id": "--source-id",
+        "title_ko": "--title-ko",
+        "title_hanja": "--title-hanja",
+        "author": "--author",
+        "era": "--era",
+        "source_note": "--source-note",
+        "modern_input_note": "--modern-input-note",
+        "rights_status": "--rights-status",
+        "license": "--license",
+        "quality_status": "--quality-status",
+        "segment_count": "--segment-count",
+        "body_start": "--body-start",
+        "body_end_before": "--body-end-before",
+    }
+    for key, option in option_map.items():
+        value = item.get(key)
+        if value not in (None, ""):
+            cmd.extend([option, str(value)])
+
+    cleanup = item.get("cleanup", {})
+    cleanup_option_map = {
+        "body_start": "--body-start",
+        "body_end_before": "--body-end-before",
+    }
+    for key, option in cleanup_option_map.items():
+        value = cleanup.get(key)
+        if value not in (None, "") and option not in cmd:
+            cmd.extend([option, str(value)])
+
+    if item.get("has_modern_input_notes"):
+        cmd.append("--has-modern-input-notes")
+    if cleanup.get("remove_preface"):
+        if "body_start" not in item and cleanup.get("body_start") is None:
+            raise SystemExit("cleanup.remove_preface requires body_start or cleanup.body_start")
+    if cleanup.get("remove_editorial_notes"):
+        cmd.append("--remove-editorial-notes")
+    if cleanup.get("remove_inline_note_refs"):
+        cmd.append("--remove-inline-note-refs")
+    if cleanup.get("remove_korean_labels"):
+        cmd.append("--remove-korean-labels")
+    if cleanup.get("reject_korean_body_text"):
+        cmd.append("--reject-korean-body-text")
+    if rhwp_bin:
+        cmd.extend(["--rhwp-bin", rhwp_bin])
+
+
+def merged_item(parent: dict, split: dict) -> dict:
+    merged = {key: value for key, value in parent.items() if key != "splits"}
+    cleanup = {}
+    if isinstance(parent.get("cleanup"), dict):
+        cleanup.update(parent["cleanup"])
+    if isinstance(split.get("cleanup"), dict):
+        cleanup.update(split["cleanup"])
+    merged.update(split)
+    if cleanup:
+        merged["cleanup"] = cleanup
+    if parent.get("source_id") and "source_id" not in merged:
+        merged["source_id"] = parent["source_id"]
+    return merged
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Batch-ingest supported public-domain source files from inbox/raw.")
     parser.add_argument("--commit", action="store_true", help="Create one git commit for all converted files")
@@ -54,33 +118,18 @@ def main() -> int:
 
     converted: list[Path] = []
     for path in files:
-        cmd = [str(INGEST), str(path), "--stage"]
         item = manifest.get(path.name, {})
-        option_map = {
-            "id": "--id",
-            "title_ko": "--title-ko",
-            "title_hanja": "--title-hanja",
-            "author": "--author",
-            "era": "--era",
-            "source_note": "--source-note",
-            "modern_input_note": "--modern-input-note",
-            "rights_status": "--rights-status",
-            "license": "--license",
-            "quality_status": "--quality-status",
-        }
-        for key, option in option_map.items():
-            value = item.get(key)
-            if value:
-                cmd.extend([option, str(value)])
-        if item.get("has_modern_input_notes"):
-            cmd.append("--has-modern-input-notes")
-        if args.rhwp_bin:
-            cmd.extend(["--rhwp-bin", args.rhwp_bin])
-        print(f"Converting: {path.name}")
-        result = run(cmd, check=False)
-        if result.returncode != 0:
-            print(f"Failed: {path.name}")
-            return result.returncode
+        splits = item.get("splits") or [None]
+        for split in splits:
+            ingest_item = merged_item(item, split) if split else item
+            cmd = [str(INGEST), str(path), "--stage"]
+            add_ingest_options(cmd, ingest_item, args.rhwp_bin)
+            label = ingest_item.get("id") or path.stem
+            print(f"Converting: {path.name} -> {label}")
+            result = run(cmd, check=False)
+            if result.returncode != 0:
+                print(f"Failed: {path.name} -> {label}")
+                return result.returncode
         converted.append(path)
 
     for path in converted:

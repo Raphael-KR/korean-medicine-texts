@@ -44,6 +44,17 @@ class QualityReport:
     metrics: dict[str, int | float]
 
 
+@dataclass(frozen=True)
+class CleanupReport:
+    body_start_pattern: str
+    body_end_before_pattern: str
+    removed_preface_lines: int
+    removed_trailing_lines: int
+    removed_editorial_note_lines: int
+    removed_inline_note_refs: int
+    korean_body_chars: int
+
+
 def run(cmd: list[str], cwd: Path = ROOT, check: bool = True) -> subprocess.CompletedProcess[str]:
     return subprocess.run(cmd, cwd=cwd, check=check, text=True, capture_output=True)
 
@@ -119,6 +130,7 @@ def evaluate_ai_readability(
     min_text_chars: int,
     max_placeholder_ratio: float,
     min_readable_ratio: float,
+    segment_count: int | None = None,
 ) -> QualityReport:
     body = "\n".join(text for _, text in pages)
     nonspace_chars = [char for char in body if not char.isspace()]
@@ -146,7 +158,7 @@ def evaluate_ai_readability(
         passed=passed,
         reasons=reasons,
         metrics={
-            "segments": len(pages),
+            "segments": segment_count or len(pages),
             "nonspace_chars": nonspace_count,
             "readable_text_chars": readable_count,
             "cjk_or_hangul_chars": cjk_count,
@@ -175,6 +187,21 @@ def fail_quality_gate(report: QualityReport) -> None:
         ]
     )
     raise SystemExit("\n".join(lines))
+
+
+def fail_cleanup_gate(report: CleanupReport) -> None:
+    raise SystemExit(
+        "\n".join(
+            [
+                "Cleaned Markdown did not pass the canonical source cleanup gate.",
+                "This file was not staged, committed, or pushed.",
+                "",
+                f"Korean body chars remaining: {report.korean_body_chars}",
+                "",
+                "If this is expected, rerun without --reject-korean-body-text.",
+            ]
+        )
+    )
 
 
 def collect_markdown_pages(raw_dir: Path) -> list[tuple[str, str]]:
@@ -262,6 +289,20 @@ def move_assets(raw_dir: Path, text_dir: Path) -> list[str]:
     return moved
 
 
+def collapse_blank_lines(lines: list[str], max_blank_run: int = 2) -> list[str]:
+    compacted = []
+    blank_run = 0
+    for line in lines:
+        if not line:
+            blank_run += 1
+            if blank_run > max_blank_run:
+                continue
+        else:
+            blank_run = 0
+        compacted.append(line)
+    return compacted
+
+
 def clean_extracted_body(text: str) -> str:
     raw_lines = text.splitlines()
     lines = []
@@ -278,17 +319,96 @@ def clean_extracted_body(text: str) -> str:
         lines.append(line)
         idx += 1
 
-    compacted = []
-    blank_run = 0
-    for line in lines:
-        if not line:
-            blank_run += 1
-            if blank_run > 2:
-                continue
-        else:
-            blank_run = 0
-        compacted.append(line)
-    return "\n".join(compacted).strip()
+    return "\n".join(collapse_blank_lines(lines)).strip()
+
+
+def find_pattern_line(lines: list[str], pattern: str, start: int = 0) -> int:
+    regex = re.compile(pattern)
+    for idx in range(start, len(lines)):
+        if regex.search(lines[idx]):
+            return idx
+    raise SystemExit(f"pattern not found in converted Markdown: {pattern}")
+
+
+def apply_body_range(text: str, body_start: str, body_end_before: str) -> tuple[str, int, int]:
+    lines = text.splitlines()
+    start_idx = 0
+    if body_start:
+        start_idx = find_pattern_line(lines, body_start)
+    end_idx = len(lines)
+    if body_end_before:
+        end_idx = find_pattern_line(lines, body_end_before, start=start_idx)
+    if start_idx >= end_idx:
+        raise SystemExit("body range is empty after applying --body-start/--body-end-before")
+    return "\n".join(lines[start_idx:end_idx]).strip(), start_idx, len(lines) - end_idx
+
+
+def remove_editorial_notes(
+    text: str,
+    remove_note_lines: bool,
+    remove_inline_note_refs: bool,
+) -> tuple[str, int, int]:
+    cleaned = []
+    removed_note_lines = 0
+    removed_inline_refs = 0
+    for raw_line in text.splitlines():
+        line = raw_line.rstrip()
+        if remove_note_lines and re.match(r"^\s*\d{1,4}\)\s+", line):
+            removed_note_lines += 1
+            continue
+        if remove_inline_note_refs:
+            line, count = re.subn(r"(?<![A-Za-z0-9])\d{1,4}\)", "", line)
+            removed_inline_refs += count
+            line = re.sub(r"[ \t]+([,.;:，。；：])", r"\1", line)
+            line = re.sub(r"[ \t]{2,}", " ", line).rstrip()
+        cleaned.append(line)
+    return "\n".join(collapse_blank_lines(cleaned)).strip(), removed_note_lines, removed_inline_refs
+
+
+def remove_korean_parenthetical_labels(text: str) -> str:
+    return re.sub(r"(?m) \([가-힣]+[\s)]*$", "", text)
+
+
+def count_hangul(text: str) -> int:
+    return sum(1 for char in text if "\uac00" <= char <= "\ud7a3")
+
+
+def cleanup_pages(
+    pages: list[tuple[str, str]],
+    body_start: str,
+    body_end_before: str,
+    remove_editorial_note_lines: bool,
+    remove_inline_note_refs: bool,
+    remove_korean_labels: bool,
+) -> tuple[list[tuple[str, str]], CleanupReport]:
+    cleaned_pages = []
+    for _, text in pages:
+        cleaned_body = clean_extracted_body(text)
+        if cleaned_body:
+            cleaned_pages.append(cleaned_body)
+    body = "\n\n".join(cleaned_pages)
+    body, removed_preface_lines, removed_trailing_lines = apply_body_range(body, body_start, body_end_before)
+    removed_note_lines = 0
+    removed_inline_refs = 0
+    if remove_editorial_note_lines or remove_inline_note_refs:
+        body, removed_note_lines, removed_inline_refs = remove_editorial_notes(
+            body,
+            remove_note_lines=remove_editorial_note_lines,
+            remove_inline_note_refs=remove_inline_note_refs,
+        )
+    if remove_korean_labels:
+        body = remove_korean_parenthetical_labels(body)
+    body = "\n".join(collapse_blank_lines([line.rstrip() for line in body.splitlines()])).strip()
+    report = CleanupReport(
+        body_start_pattern=body_start,
+        body_end_before_pattern=body_end_before,
+        removed_preface_lines=removed_preface_lines,
+        removed_trailing_lines=removed_trailing_lines,
+        removed_editorial_note_lines=removed_note_lines,
+        removed_inline_note_refs=removed_inline_refs,
+        korean_body_chars=count_hangul(body),
+    )
+    return [("source.md", body)], report
 
 
 def source_markdown(title: str, source_rel: str, metadata: dict, pages: list[tuple[str, str]]) -> str:
@@ -302,7 +422,7 @@ def source_markdown(title: str, source_rel: str, metadata: dict, pages: list[tup
         "converted_at": metadata["converted_at"],
         "conversion_tool": metadata["conversion_tool"],
         "license": metadata["license"],
-        "segment_count": len(pages),
+        "segment_count": metadata["segment_count"],
     }
     lines = ["---"]
     for key, value in front_matter.items():
@@ -447,6 +567,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Convert a public-domain source text to a Markdown archive entry.")
     parser.add_argument("input", help="Input source file: .hwp, .hwpx, .doc, .docx, .txt, or .md")
     parser.add_argument("--id", help="Stable ASCII text id, e.g. donguibogam")
+    parser.add_argument("--source-id", help="Stable source archive id. Defaults to --id.")
     parser.add_argument("--title", help="Document title. Defaults to input filename stem.")
     parser.add_argument("--title-ko", help="Korean title. Defaults to --title or input filename stem.")
     parser.add_argument("--title-hanja", default="", help="Hanja title, if known")
@@ -470,6 +591,29 @@ def main() -> int:
     )
     parser.add_argument("--license", default="Public Domain Mark 1.0", help="Data license/mark")
     parser.add_argument("--quality-status", default="raw_converted", help="raw_converted, reviewed, corrected, etc.")
+    parser.add_argument("--segment-count", type=int, help="Override segment count for split or manually ranged texts")
+    parser.add_argument("--body-start", default="", help="Regex for the first body line to keep")
+    parser.add_argument("--body-end-before", default="", help="Regex for the first body line to exclude")
+    parser.add_argument(
+        "--remove-editorial-notes",
+        action="store_true",
+        help="Remove editorial note lines that start with numeric note markers, e.g. '1) 校釋作 ...'",
+    )
+    parser.add_argument(
+        "--remove-inline-note-refs",
+        action="store_true",
+        help="Remove inline numeric note markers such as '1)' and '5)6)' from the body",
+    )
+    parser.add_argument(
+        "--remove-korean-labels",
+        action="store_true",
+        help="Remove trailing Korean parenthetical labels in headings, e.g. '(질병'",
+    )
+    parser.add_argument(
+        "--reject-korean-body-text",
+        action="store_true",
+        help="Fail if Hangul remains in the cleaned body text",
+    )
     parser.add_argument("--skip-quality-gate", action="store_true", help="Allow ingest even when the AI-readability gate fails")
     parser.add_argument("--min-text-chars", type=int, default=500, help="Minimum readable letter/number/CJK chars")
     parser.add_argument(
@@ -502,12 +646,35 @@ def main() -> int:
     text_id = make_id(text_id)
     if not text_id:
         raise SystemExit("--id must contain at least one ASCII letter or digit")
+    source_id = make_id(args.source_id or text_id)
+    if not source_id:
+        raise SystemExit("--source-id must contain at least one ASCII letter or digit")
     title = unicodedata.normalize("NFC", args.title_ko or args.title or input_path.stem)
 
     source_name = unicodedata.normalize("NFC", input_path.name)
-    source_dir = ROOT / "sources" / text_id
+    source_dir = ROOT / "sources" / source_id
     text_dir = ROOT / "texts" / text_id
     source_target = source_dir / source_name
+
+    cleanup_applied = any(
+        [
+            args.body_start,
+            args.body_end_before,
+            args.remove_editorial_notes,
+            args.remove_inline_note_refs,
+            args.remove_korean_labels,
+            args.reject_korean_body_text,
+        ]
+    )
+    cleanup_report = CleanupReport(
+        body_start_pattern="",
+        body_end_before_pattern="",
+        removed_preface_lines=0,
+        removed_trailing_lines=0,
+        removed_editorial_note_lines=0,
+        removed_inline_note_refs=0,
+        korean_body_chars=0,
+    )
 
     with tempfile.TemporaryDirectory(prefix="archive-ingest-") as tmp:
         tmp_text_dir = Path(tmp) / "text"
@@ -515,12 +682,25 @@ def main() -> int:
         tmp_text_dir.mkdir(parents=True, exist_ok=True)
         raw_dir.mkdir(parents=True, exist_ok=True)
         pages, asset_dirs, conversion_tool, info_stdout, info_stderr = convert_source(input_path, raw_dir, rhwp)
+        original_page_count = len(pages)
+        if cleanup_applied:
+            pages, cleanup_report = cleanup_pages(
+                pages,
+                body_start=args.body_start,
+                body_end_before=args.body_end_before,
+                remove_editorial_note_lines=args.remove_editorial_notes,
+                remove_inline_note_refs=args.remove_inline_note_refs,
+                remove_korean_labels=args.remove_korean_labels,
+            )
+            if args.reject_korean_body_text and cleanup_report.korean_body_chars:
+                fail_cleanup_gate(cleanup_report)
 
         quality_report = evaluate_ai_readability(
             pages,
             min_text_chars=args.min_text_chars,
             max_placeholder_ratio=args.max_placeholder_ratio,
             min_readable_ratio=args.min_readable_ratio,
+            segment_count=args.segment_count,
         )
         if not quality_report.passed and not args.skip_quality_gate:
             fail_quality_gate(quality_report)
@@ -529,8 +709,14 @@ def main() -> int:
         clean_dir(text_dir)
         if input_path != source_target:
             shutil.copy2(input_path, source_target)
+        body_text = "\n".join(text for _, text in pages)
+        kept_asset_dirs = []
         for asset_dir in asset_dirs:
+            if asset_dir not in body_text:
+                continue
             shutil.move(str(tmp_text_dir / asset_dir), str(text_dir / asset_dir))
+            kept_asset_dirs.append(asset_dir)
+        asset_dirs = kept_asset_dirs
 
     if not pages:
         raise SystemExit("conversion did not produce Markdown content")
@@ -548,6 +734,16 @@ def main() -> int:
         "source_note": unicodedata.normalize("NFC", args.source_note),
         "has_modern_input_notes": args.has_modern_input_notes,
         "modern_input_note": unicodedata.normalize("NFC", args.modern_input_note),
+        "cleanup_applied": cleanup_applied,
+        "cleanup": {
+            "body_start_pattern": cleanup_report.body_start_pattern,
+            "body_end_before_pattern": cleanup_report.body_end_before_pattern,
+            "removed_preface_lines": cleanup_report.removed_preface_lines,
+            "removed_trailing_lines": cleanup_report.removed_trailing_lines,
+            "removed_editorial_note_lines": cleanup_report.removed_editorial_note_lines,
+            "removed_inline_note_refs": cleanup_report.removed_inline_note_refs,
+            "korean_body_chars": cleanup_report.korean_body_chars,
+        },
         "rights_status": args.rights_status,
         "license": args.license,
         "quality_status": args.quality_status if quality_report.passed else quality_report.status,
@@ -564,8 +760,8 @@ def main() -> int:
         },
         "converted_at": datetime.now(timezone.utc).isoformat(),
         "conversion_tool": conversion_tool,
-        "segment_count": len(pages),
-        "page_count": len(pages) if source_target.suffix.lower() in {".hwp", ".hwpx"} else None,
+        "segment_count": args.segment_count or len(pages),
+        "page_count": original_page_count if source_target.suffix.lower() in {".hwp", ".hwpx"} and not cleanup_applied else None,
         "asset_dirs": asset_dirs,
         "conversion_info_stdout": info_stdout,
         "conversion_info_stderr": info_stderr,

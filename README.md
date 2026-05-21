@@ -26,6 +26,9 @@
 
 - [동의보감](texts/donguibogam/source.md)
 - [동의수세보원](texts/donguisusebowon/source.md)
+- [경악전서](texts/gyeongakjeonseo/source.md)
+- [황제내경소문](texts/huangdineijingsuwen/source.md)
+- [황제내경영추](texts/huangdineijinglingshu/source.md)
 
 ## 데이터 구조
 
@@ -68,6 +71,46 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 현재 자료는 기본적으로 `raw_converted`입니다. 연구나 임상 판단에 사용할 때는 반드시 원문 대조가 필요합니다.
 
 일부 파일에는 고전 원문 외에 현대 입력자가 남긴 "일러두기", 입력 방식 설명, 기호 설명 등이 포함될 수 있습니다. 이런 경우 `metadata.json`의 `has_modern_input_notes`와 `modern_input_note`에 별도 표시합니다.
+
+canonical `source.md`는 AI 참조용 원문 코퍼스이므로, 원본 파일에 현대 서두, 교정주, 음훈 각주, 미주가 포함되어 있더라도 필요하면 변환 과정에서 제거합니다. 제거 여부와 적용된 정제 규칙은 `metadata.json`의 `cleanup_applied`와 `cleanup`에 기록합니다.
+
+## 변환 Manifest
+
+운영자는 `inbox/raw/manifest.json`으로 변환 규칙을 지정할 수 있습니다. 한 원본 파일이 여러 문헌을 포함하면 `splits`로 나누고, 현대 주석층 제거는 `cleanup`에서 명시합니다.
+
+```json
+{
+  "황제내경소문.hwpx": {
+    "source_id": "huangdineijing",
+    "source_note": "원본 HWPX에는 黃帝內經素問과 黃帝內經靈樞가 함께 포함됨",
+    "has_modern_input_notes": true,
+    "modern_input_note": "원본의 현대 서두와 교정주/음훈 각주는 canonical source.md에서 제거함",
+    "cleanup": {
+      "remove_editorial_notes": true,
+      "remove_inline_note_refs": true,
+      "remove_korean_labels": true,
+      "reject_korean_body_text": true
+    },
+    "splits": [
+      {
+        "id": "huangdineijingsuwen",
+        "title_ko": "황제내경소문",
+        "title_hanja": "黃帝內經素問",
+        "body_start": "^上古天眞論篇 第一$",
+        "body_end_before": "^九鍼十二原 第一\\(法天\\)$",
+        "segment_count": 81
+      },
+      {
+        "id": "huangdineijinglingshu",
+        "title_ko": "황제내경영추",
+        "title_hanja": "黃帝內經靈樞",
+        "body_start": "^九鍼十二原 第一\\(法天\\)$",
+        "segment_count": 81
+      }
+    ]
+  }
+}
+```
 
 ## 기여 방법
 
