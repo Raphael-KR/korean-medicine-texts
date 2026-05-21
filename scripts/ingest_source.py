@@ -284,12 +284,7 @@ def source_markdown(title: str, source_rel: str, metadata: dict, pages: list[tup
     lines.append(f"- Conversion tool: `{metadata['conversion_tool']}`")
     lines.append("")
 
-    for idx, (filename, body) in enumerate(pages, start=1):
-        if metadata["source_format"] in {"hwp", "hwpx"}:
-            lines.append(f"<!-- rhwp-page: {idx}; original-file: {filename} -->")
-        else:
-            lines.append(f"<!-- source-segment: {idx}; original-file: {filename} -->")
-        lines.append("")
+    for _, body in pages:
         lines.append(body)
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"
