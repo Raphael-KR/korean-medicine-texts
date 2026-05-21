@@ -22,13 +22,13 @@
       "title_hanja": "東醫壽世保元",
       "author": "이제마",
       "era": "조선",
-      "source_path": "sources/donguisusebowon/동의수세보원.hwp",
-      "source_format": "hwp",
+      "source_path": "sources/donguisusebowon/동의수세보원.hwpx",
+      "source_format": "hwpx",
       "markdown_path": "texts/donguisusebowon/source.md",
       "rights_status": "public_domain_classical_text",
       "license": "Public Domain Mark 1.0",
-      "quality_status": "needs_ocr",
-      "segment_count": 93
+      "quality_status": "raw_converted",
+      "segment_count": 95
     }
   ]
 }
