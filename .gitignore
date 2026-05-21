@@ -1,0 +1,9 @@
+vendor/rhwp/
+inbox/raw/*
+inbox/processed/*
+!inbox/raw/.gitkeep
+!inbox/processed/.gitkeep
+.DS_Store
+__pycache__/
+*.pyc
+output/
