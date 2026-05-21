@@ -14,6 +14,6 @@
 - Contains modern input notes: `False`
 - Modern input note: 없음
 - Quality status: `raw_converted`
-- Converted at: `2026-05-21T14:42:43.447600+00:00`
+- Converted at: `2026-05-21T15:00:51.542498+00:00`
 - Conversion tool: `rhwp v0.7.12`
 - Source segments: 873

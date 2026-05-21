@@ -262,6 +262,35 @@ def move_assets(raw_dir: Path, text_dir: Path) -> list[str]:
     return moved
 
 
+def clean_extracted_body(text: str) -> str:
+    raw_lines = text.splitlines()
+    lines = []
+    idx = 0
+    while idx < len(raw_lines):
+        line = raw_lines[idx].rstrip()
+        next_line = raw_lines[idx + 1].rstrip() if idx + 1 < len(raw_lines) else ""
+        if re.fullmatch(r"\s*-\d{1,5}-\s*", line):
+            idx += 1
+            continue
+        if re.fullmatch(r"\|\s*\|", line) and re.fullmatch(r"\|\s*-{3,}\s*\|", next_line):
+            idx += 2
+            continue
+        lines.append(line)
+        idx += 1
+
+    compacted = []
+    blank_run = 0
+    for line in lines:
+        if not line:
+            blank_run += 1
+            if blank_run > 2:
+                continue
+        else:
+            blank_run = 0
+        compacted.append(line)
+    return "\n".join(compacted).strip()
+
+
 def source_markdown(title: str, source_rel: str, metadata: dict, pages: list[tuple[str, str]]) -> str:
     front_matter = {
         "id": metadata["id"],
@@ -279,13 +308,12 @@ def source_markdown(title: str, source_rel: str, metadata: dict, pages: list[tup
     for key, value in front_matter.items():
         lines.append(f"{key}: {json.dumps(value, ensure_ascii=False)}")
     lines.extend(["---", "", f"# {title}", ""])
-    lines.append(f"- Source: [{Path(source_rel).name}]({source_rel})")
-    lines.append(f"- License: `{metadata['license']}`")
-    lines.append(f"- Conversion tool: `{metadata['conversion_tool']}`")
-    lines.append("")
 
     for _, body in pages:
-        lines.append(body)
+        cleaned_body = clean_extracted_body(body)
+        if not cleaned_body:
+            continue
+        lines.append(cleaned_body)
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"
 
