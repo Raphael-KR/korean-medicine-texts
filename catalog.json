@@ -8,13 +8,13 @@
       "title_hanja": "東醫寶鑑",
       "author": "허준",
       "era": "조선",
-      "source_path": "sources/donguibogam/동의보감원문.hwp",
-      "source_format": "hwp",
+      "source_path": "sources/donguibogam/동의보감원문.hwpx",
+      "source_format": "hwpx",
       "markdown_path": "texts/donguibogam/source.md",
       "rights_status": "public_domain_classical_text",
       "license": "Public Domain Mark 1.0",
       "quality_status": "raw_converted",
-      "segment_count": 724
+      "segment_count": 737
     },
     {
       "id": "donguisusebowon",

@@ -5,18 +5,37 @@
   "title_hanja": "東醫寶鑑",
   "author": "허준",
   "era": "조선",
-  "source_path": "sources/donguibogam/동의보감원문.hwp",
-  "source_format": "hwp",
-  "source_sha256": "e3fbaf639415bef8edc499782640da9c6c25b492a1fb94cae27c2cd1f10eda9b",
-  "source_note": "저작권이 소실된 고전 원문 파일",
+  "source_path": "sources/donguibogam/동의보감원문.hwpx",
+  "source_format": "hwpx",
+  "source_sha256": "f1379f4a539f3d2be98203f5a728695ba38f04da75595ad469851fc93cc05630",
+  "source_note": "한컴오피스에서 HWP 원본을 HWPX로 변환한 공개 배포 가능 고전 원문 파일",
   "rights_status": "public_domain_classical_text",
   "license": "Public Domain Mark 1.0",
   "quality_status": "raw_converted",
-  "converted_at": "2026-05-21T13:23:53.452408+00:00",
+  "quality_gate": {
+    "passed": true,
+    "status": "raw_converted",
+    "reasons": [],
+    "metrics": {
+      "segments": 737,
+      "nonspace_chars": 950169,
+      "readable_text_chars": 872149,
+      "cjk_or_hangul_chars": 870041,
+      "object_placeholder_chars": 0,
+      "object_placeholder_ratio": 0.0,
+      "readable_char_ratio": 0.917888
+    },
+    "thresholds": {
+      "min_text_chars": 500,
+      "max_placeholder_ratio": 0.02,
+      "min_readable_ratio": 0.25
+    }
+  },
+  "converted_at": "2026-05-21T14:13:59.835388+00:00",
   "conversion_tool": "rhwp v0.7.12",
-  "segment_count": 724,
-  "page_count": 724,
+  "segment_count": 737,
+  "page_count": 737,
   "asset_dirs": [],
-  "conversion_info_stdout": "파일: ./sources/donguibogam/동의보감원문.hwp\n크기: 2732032 bytes\n버전: 5.0.0.0\n압축: 예\n암호화: 아니오\n배포용: 아니오\n구역 수: 1\n페이지 수: 724\n구역0 용지: 59528×84188 HWPUNIT, 방향=세로 (여백: 좌8504 우8504 상5668 하2652)\n  머리말여백=4252 꼬리말여백=4252 제본여백=0\n폰트(한글): [0]휴먼옛체, [1]한양신명조, [2]한양중고딕, [3]한양견고딕\n폰트(영어): [0]한양신명조, [1]한양중고딕, [2]한양견고딕, [3]한양궁서\n폰트(한자): [0]한양신명조, [1]한양중고딕, [2]신명 세명조\n폰트(일어): [0]한양신명조, [1]한양중고딕\n폰트(기타): [0]한양신명조\n폰트(기호): [0]한양신명조, [1]한양중고딕\n폰트(사용자): [0]명조\n스타일: 바탕글, 본문(신명조10), 본문(중고딕10), 작은제목(중고딕15), 중간제목(옛체20), 큰제목(견고딕20), 큰제목(견고딕30), 머리말(신명조9), 머리말(중고딕9), 각주내용(신명조9), 개요 1\n총 문단 수: 14622\nParaShape: 6 (PS/문단 = 0.000)\nCharShape: 9 (CS/문단 = 0.001)\nOrigin 추정: HWP3 변환본 추정 (margin_bottom -1600 HU 보정 적용)\n표1 [구역0:문단10821]: 13행×5열, 셀 65개, 쪽나눔=나누지 않음 (attr=0x00000004), 제목반복=true\n표2 [구역0:문단14615]: 13행×14열, 셀 182개, 쪽나눔=나누지 않음 (attr=0x00000004), 제목반복=true",
+  "conversion_info_stdout": "파일: ./inbox/raw/동의보감원문.hwpx\n크기: 1750855 bytes\n버전: 5.1.0.0\n압축: 아니오\n암호화: 아니오\n배포용: 아니오\n구역 수: 1\n페이지 수: 737\n구역0 용지: 59528×84188 HWPUNIT, 방향=세로 (여백: 좌8504 우8504 상5668 하4252)\n  머리말여백=4252 꼬리말여백=4252 제본여백=0\n폰트(한글): [0]함초롬돋움, [1]휴먼옛체, [2]한양견고딕, [3]한양신명조, [4]한양중고딕\n폰트(영어): [0]함초롬돋움, [1]한양견고딕, [2]한양궁서, [3]한양신명조, [4]한양중고딕\n폰트(한자): [0]함초롬돋움, [1]신명 세명조, [2]한양신명조, [3]한양중고딕\n폰트(일어): [0]함초롬돋움, [1]한양신명조, [2]한양중고딕\n폰트(기타): [0]함초롬돋움, [1]한양신명조\n폰트(기호): [0]함초롬돋움, [1]한양신명조, [2]한양중고딕\n폰트(사용자): [0]함초롬돋움, [1]명조\n스타일: 바탕글, 본문(신명조10), 본문(중고딕10), 작은제목(중고딕15), 중간제목(옛체20), 큰제목(견고딕20), 큰제목(견고딕30), 머리말(신명조9), 머리말(중고딕9), 각주내용(신명조9), 개요 1\n총 문단 수: 14622\nParaShape: 6 (PS/문단 = 0.000)\nCharShape: 10 (CS/문단 = 0.001)\nOrigin 추정: HWP3 변환본 추정 (margin_bottom -1600 HU 보정 적용)\n표1 [구역0:문단10821]: 13행×5열, 셀 65개, 쪽나눔=나누지 않음 (attr=0x00000000), 제목반복=true\n표2 [구역0:문단14615]: 13행×14열, 셀 182개, 쪽나눔=나누지 않음 (attr=0x00000000), 제목반복=true",
   "conversion_info_stderr": ""
 }
