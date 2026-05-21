@@ -16,7 +16,12 @@ Use this skill when the user gives a public-domain classical source text file an
 ./scripts/ingest_source.py "/absolute/path/to/file.hwp" --id stable-id --commit --push
 ```
 
-4. Return:
+4. The ingester runs an AI-readability quality gate before writing archive files or publishing:
+   - enough readable Korean/Hanja/letter/number text must be present
+   - object/replacement placeholders such as `￼` must remain below the threshold
+   - if the gate fails, do not commit or push; report that OCR or a better text source is needed
+
+5. Return:
    - the generated `texts/<id>/source.md` path
    - the GitHub URL printed by the script
    - any warnings from `rhwp`

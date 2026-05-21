@@ -52,6 +52,8 @@ GitHub 사용이 익숙하지 않다면 운영자에게 다음 정보를 전달�
 
 현재 지원 형식은 `.hwp`, `.hwpx`, `.doc`, `.docx`, `.txt`, `.md`입니다.
 
+변환 직후에는 자동 품질 게이트가 실행됩니다. `source.md` 후보가 충분한 실제 한글/한자/문자 텍스트를 포함하지 않거나, `￼` 같은 객체/치환 문자가 과도하면 변환은 실패로 처리되고 git stage, commit, push가 진행되지 않습니다. 이런 파일은 OCR 또는 더 나은 텍스트 원본 확보가 필요합니다.
+
 여러 파일을 한 번에 처리할 때는 `inbox/raw/manifest.example.json`을 참고해 `inbox/raw/manifest.json`을 작성한 뒤:
 
 ```bash
@@ -65,5 +67,5 @@ GitHub 사용이 익숙하지 않다면 운영자에게 다음 정보를 전달�
 - [ ] 현대 출판사 교정본, 역주본, 번역본, 해설본이 아니다.
 - [ ] 폴더명은 stable ASCII ID를 사용했다.
 - [ ] `metadata.json`의 서지/권리/품질 정보가 채워져 있다.
-- [ ] `source.md`가 AI가 읽을 canonical 원문으로 제공된다.
+- [ ] `source.md`가 자동 품질 게이트를 통과한 AI-readable canonical 원문이다.
 - [ ] `catalog.json`과 `CATALOG.md`가 갱신되어 있다.

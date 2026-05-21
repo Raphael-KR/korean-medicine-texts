@@ -59,8 +59,11 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 각 문헌의 `metadata.json`에는 `quality_status`가 있습니다.
 
 - `raw_converted`: 원본 파일에서 Markdown으로 자동 변환한 원문
+- `needs_ocr`: 자동 변환 결과가 AI가 읽기 좋은 텍스트 기준을 통과하지 못해 OCR 또는 다른 원본 확보가 필요한 상태
 - `reviewed`: 사람이 원문 대조를 일부 또는 전체 수행
 - `corrected`: 오류 교정이 반영된 상태
+
+자동 변환 스크립트는 변환 직후 `source.md` 후보에 대해 품질 게이트를 실행합니다. 본문 글자 수, `￼` 같은 객체/치환 문자 비율, 실제 문자 비율을 검사하며, 통과하지 못한 자료는 기본적으로 `texts/` 갱신, git stage, commit, push를 진행하지 않습니다.
 
 현재 자료는 기본적으로 `raw_converted`입니다. 연구나 임상 판단에 사용할 때는 반드시 원문 대조가 필요합니다.
 

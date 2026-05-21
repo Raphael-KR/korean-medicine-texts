@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
 import hashlib
 import json
 import os
@@ -21,6 +22,26 @@ from urllib.parse import quote
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RHWP = ROOT / "vendor" / "rhwp" / "target" / "release" / "rhwp"
 SUPPORTED_SOURCE_EXTENSIONS = {".hwp", ".hwpx", ".doc", ".docx", ".txt", ".md"}
+OBJECT_PLACEHOLDERS = {"\ufffc", "\ufffd"}
+CJK_RANGES = (
+    (0x3400, 0x4DBF),
+    (0x4E00, 0x9FFF),
+    (0xF900, 0xFAFF),
+    (0x20000, 0x2A6DF),
+    (0x2A700, 0x2B73F),
+    (0x2B740, 0x2B81F),
+    (0x2B820, 0x2CEAF),
+    (0x2CEB0, 0x2EBEF),
+    (0x30000, 0x3134F),
+)
+
+
+@dataclass(frozen=True)
+class QualityReport:
+    status: str
+    passed: bool
+    reasons: list[str]
+    metrics: dict[str, int | float]
 
 
 def run(cmd: list[str], cwd: Path = ROOT, check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -81,6 +102,79 @@ def clean_dir(path: Path) -> None:
     if path.exists():
         shutil.rmtree(path)
     path.mkdir(parents=True, exist_ok=True)
+
+
+def is_cjk(char: str) -> bool:
+    codepoint = ord(char)
+    return any(start <= codepoint <= end for start, end in CJK_RANGES)
+
+
+def is_readable_text_char(char: str) -> bool:
+    category = unicodedata.category(char)
+    return category[0] in {"L", "N"} or is_cjk(char)
+
+
+def evaluate_ai_readability(
+    pages: list[tuple[str, str]],
+    min_text_chars: int,
+    max_placeholder_ratio: float,
+    min_readable_ratio: float,
+) -> QualityReport:
+    body = "\n".join(text for _, text in pages)
+    nonspace_chars = [char for char in body if not char.isspace()]
+    nonspace_count = len(nonspace_chars)
+    placeholder_count = sum(1 for char in nonspace_chars if char in OBJECT_PLACEHOLDERS)
+    readable_count = sum(1 for char in nonspace_chars if is_readable_text_char(char))
+    cjk_count = sum(1 for char in nonspace_chars if is_cjk(char) or "\uac00" <= char <= "\ud7a3")
+    replacement_ratio = placeholder_count / nonspace_count if nonspace_count else 1.0
+    readable_ratio = readable_count / nonspace_count if nonspace_count else 0.0
+
+    reasons = []
+    if readable_count < min_text_chars:
+        reasons.append(f"readable text chars {readable_count} < minimum {min_text_chars}")
+    if replacement_ratio > max_placeholder_ratio:
+        reasons.append(
+            f"object/replacement placeholder ratio {replacement_ratio:.3f} > maximum {max_placeholder_ratio:.3f}"
+        )
+    if readable_ratio < min_readable_ratio:
+        reasons.append(f"readable character ratio {readable_ratio:.3f} < minimum {min_readable_ratio:.3f}")
+
+    passed = not reasons
+    status = "raw_converted" if passed else "needs_ocr"
+    return QualityReport(
+        status=status,
+        passed=passed,
+        reasons=reasons,
+        metrics={
+            "segments": len(pages),
+            "nonspace_chars": nonspace_count,
+            "readable_text_chars": readable_count,
+            "cjk_or_hangul_chars": cjk_count,
+            "object_placeholder_chars": placeholder_count,
+            "object_placeholder_ratio": round(replacement_ratio, 6),
+            "readable_char_ratio": round(readable_ratio, 6),
+        },
+    )
+
+
+def fail_quality_gate(report: QualityReport) -> None:
+    lines = [
+        "Converted Markdown did not pass the AI-readable text quality gate.",
+        "This file was not staged, committed, or pushed.",
+        "",
+        "Reasons:",
+    ]
+    lines.extend(f"- {reason}" for reason in report.reasons)
+    lines.extend(
+        [
+            "",
+            "Metrics:",
+            json.dumps(report.metrics, ensure_ascii=False, indent=2),
+            "",
+            "Next step: use an OCR/text-source workflow, then ingest the corrected text.",
+        ]
+    )
+    raise SystemExit("\n".join(lines))
 
 
 def collect_markdown_pages(raw_dir: Path) -> list[tuple[str, str]]:
@@ -338,6 +432,20 @@ def main() -> int:
     )
     parser.add_argument("--license", default="Public Domain Mark 1.0", help="Data license/mark")
     parser.add_argument("--quality-status", default="raw_converted", help="raw_converted, reviewed, corrected, etc.")
+    parser.add_argument("--skip-quality-gate", action="store_true", help="Allow ingest even when the AI-readability gate fails")
+    parser.add_argument("--min-text-chars", type=int, default=500, help="Minimum readable letter/number/CJK chars")
+    parser.add_argument(
+        "--max-placeholder-ratio",
+        type=float,
+        default=0.02,
+        help="Maximum ratio of object/replacement placeholder chars among non-space chars",
+    )
+    parser.add_argument(
+        "--min-readable-ratio",
+        type=float,
+        default=0.25,
+        help="Minimum ratio of readable letter/number/CJK chars among non-space chars",
+    )
     parser.add_argument("--rhwp-bin", help="Path to rhwp binary")
     parser.add_argument("--stage", action="store_true", help="Stage the ingested files with git add")
     parser.add_argument("--commit", action="store_true", help="Create a git commit for the ingested document")
@@ -358,20 +466,34 @@ def main() -> int:
         raise SystemExit("--id must contain at least one ASCII letter or digit")
     title = unicodedata.normalize("NFC", args.title_ko or args.title or input_path.stem)
 
+    source_name = unicodedata.normalize("NFC", input_path.name)
     source_dir = ROOT / "sources" / text_id
     text_dir = ROOT / "texts" / text_id
-    raw_dir = text_dir / ".rhwp-raw"
-    source_dir.mkdir(parents=True, exist_ok=True)
-    clean_dir(text_dir)
-    raw_dir.mkdir(parents=True, exist_ok=True)
-
-    source_name = unicodedata.normalize("NFC", input_path.name)
     source_target = source_dir / source_name
-    if input_path != source_target:
-        shutil.copy2(input_path, source_target)
 
-    pages, asset_dirs, conversion_tool, info_stdout, info_stderr = convert_source(source_target, raw_dir, rhwp)
-    shutil.rmtree(raw_dir, ignore_errors=True)
+    with tempfile.TemporaryDirectory(prefix="archive-ingest-") as tmp:
+        tmp_text_dir = Path(tmp) / "text"
+        raw_dir = tmp_text_dir / ".rhwp-raw"
+        tmp_text_dir.mkdir(parents=True, exist_ok=True)
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        pages, asset_dirs, conversion_tool, info_stdout, info_stderr = convert_source(input_path, raw_dir, rhwp)
+
+        quality_report = evaluate_ai_readability(
+            pages,
+            min_text_chars=args.min_text_chars,
+            max_placeholder_ratio=args.max_placeholder_ratio,
+            min_readable_ratio=args.min_readable_ratio,
+        )
+        if not quality_report.passed and not args.skip_quality_gate:
+            fail_quality_gate(quality_report)
+
+        source_dir.mkdir(parents=True, exist_ok=True)
+        clean_dir(text_dir)
+        if input_path != source_target:
+            shutil.copy2(input_path, source_target)
+        for asset_dir in asset_dirs:
+            shutil.move(str(tmp_text_dir / asset_dir), str(text_dir / asset_dir))
+
     if not pages:
         raise SystemExit("conversion did not produce Markdown content")
 
@@ -388,7 +510,18 @@ def main() -> int:
         "source_note": unicodedata.normalize("NFC", args.source_note),
         "rights_status": args.rights_status,
         "license": args.license,
-        "quality_status": args.quality_status,
+        "quality_status": args.quality_status if quality_report.passed else quality_report.status,
+        "quality_gate": {
+            "passed": quality_report.passed,
+            "status": quality_report.status,
+            "reasons": quality_report.reasons,
+            "metrics": quality_report.metrics,
+            "thresholds": {
+                "min_text_chars": args.min_text_chars,
+                "max_placeholder_ratio": args.max_placeholder_ratio,
+                "min_readable_ratio": args.min_readable_ratio,
+            },
+        },
         "converted_at": datetime.now(timezone.utc).isoformat(),
         "conversion_tool": conversion_tool,
         "segment_count": len(pages),
