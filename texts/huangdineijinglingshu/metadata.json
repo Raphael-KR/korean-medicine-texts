@@ -1,0 +1,43 @@
+{
+  "id": "huangdineijinglingshu",
+  "title": "황제내경영추",
+  "title_ko": "황제내경영추",
+  "title_hanja": "黃帝內經靈樞",
+  "author": "",
+  "era": "",
+  "source_path": "sources/huangdineijingsuwen/황제내경소문.hwpx",
+  "source_format": "hwpx",
+  "source_sha256": "51184bbee08bc8e07afaecd82619354ce5e8fc8f0faa92fa043e7968f052526f",
+  "source_note": "원본 HWPX에는 黃帝內經素問과 黃帝內經靈樞가 함께 포함되어 있으며, 본 항목은 해당 원본에서 해당 편만 분리한 것임",
+  "has_modern_input_notes": true,
+  "modern_input_note": "원본 파일 앞부분에 1993년 조광래의 머릿말, 1995년 진주표의 교정판 안내, 1997년 편집본 범례와 편집주가 있었으나, source.md에서는 고전 원문만 남기고 제거함",
+  "rights_status": "public_domain_classical_text",
+  "license": "Public Domain Mark 1.0",
+  "quality_status": "raw_converted",
+  "quality_gate": {
+    "passed": true,
+    "status": "raw_converted",
+    "reasons": [],
+    "metrics": {
+      "segments": 81,
+      "nonspace_chars": 97099,
+      "readable_text_chars": 79164,
+      "cjk_or_hangul_chars": 74001,
+      "object_placeholder_chars": 0,
+      "object_placeholder_ratio": 0.0,
+      "readable_char_ratio": 0.815292
+    },
+    "thresholds": {
+      "min_text_chars": 500,
+      "max_placeholder_ratio": 0.02,
+      "min_readable_ratio": 0.25
+    }
+  },
+  "converted_at": "2026-05-21T15:21:16.029154+00:00",
+  "conversion_tool": "rhwp v0.7.12",
+  "segment_count": 81,
+  "page_count": null,
+  "asset_dirs": [],
+  "conversion_info_stdout": "파일: ./inbox/raw/황제내경소문.hwpx\n크기: 743208 bytes\n버전: 5.1.0.0\n압축: 아니오\n암호화: 아니오\n배포용: 아니오\n구역 수: 1\n페이지 수: 478\n구역0 용지: 59528×84188 HWPUNIT, 방향=세로 (여백: 좌5668 우4252 상3600 하4252)\n  머리말여백=3600 꼬리말여백=2268 제본여백=0\n폰트(한글): [0]#견명조, [1]#신문견고, [2]#신문견명, [3]#신문명조, [4]#신중명조, [5]#중명조, [6]가는안상수체, [7]명조, [8]신명 견명조, [9]신명 신명조, [10]신명 중명조, [11]신명 태그래픽, [12]한양견명조\n폰트(영어): [0]#견명조, [1]#신문견고, [2]#신문견명, [3]#신문명조, [4]#신중명조, [5]#중명조, [6]명조, [7]신명 견명조, [8]신명 신명조, [9]태 나무, [10]한양견명조, [11]한양신명조\n폰트(한자): [0]#견명조, [1]#신문견고, [2]#신문견명, [3]#신문명조, [4]#중명조, [5]#태고딕, [6]명조, [7]신명 견고딕, [8]신명 견명조, [9]신명 궁서, [10]신명 세명조, [11]신명 중명조, [12]한양신명조\n폰트(일어): [0]#세명조, [1]#태고딕, [2]#태명조, [3]명조, [4]신명 견명조, [5]신명 신명조, [6]한양신명조\n폰트(기타): [0]명조, [1]한양신명조\n폰트(기호): [0]#견고딕, [1]#견명조, [2]#신문명조, [3]#중명조, [4]명조, [5]신명 견명조, [6]한양신명조\n폰트(사용자): [0]명조, [1]신명조\n스타일: 바탕글, 본문(12칸째), 본문9칸 들여쓰기, 장 제목(15), 논편명(17), 절 제목(14), 각주내용, 큰제목, 대제, 편집자, 머릿말 본문\n총 문단 수: 10257\nParaShape: 34 (PS/문단 = 0.003)\nCharShape: 39 (CS/문단 = 0.004)\nOrigin 추정: HWP3 변환본 추정 (margin_bottom -1600 HU 보정 적용)\nBinData:\n  [0] Embedding (ID: 1, ext: PCX, loaded: 134308 bytes)\n그림1 [구역0:문단2]: bin_data_id=1, size=35972×29104",
+  "conversion_info_stderr": ""
+}
