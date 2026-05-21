@@ -9,11 +9,12 @@
       "author": "허준",
       "era": "조선",
       "source_path": "sources/donguibogam/동의보감원문.hwp",
+      "source_format": "hwp",
       "markdown_path": "texts/donguibogam/source.md",
       "rights_status": "public_domain_classical_text",
       "license": "Public Domain Mark 1.0",
       "quality_status": "raw_converted",
-      "page_count": 724
+      "segment_count": 724
     },
     {
       "id": "donguisusebowon",
@@ -22,11 +23,12 @@
       "author": "이제마",
       "era": "조선",
       "source_path": "sources/donguisusebowon/동의수세보원.hwp",
+      "source_format": "hwp",
       "markdown_path": "texts/donguisusebowon/source.md",
       "rights_status": "public_domain_classical_text",
       "license": "Public Domain Mark 1.0",
       "quality_status": "raw_converted",
-      "page_count": 93
+      "segment_count": 93
     }
   ]
 }

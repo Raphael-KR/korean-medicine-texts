@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Batch-ingest HWP/HWPX files from inbox/raw."""
+"""Batch-ingest public-domain source files from inbox/raw."""
 
 from __future__ import annotations
 
@@ -13,8 +13,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 INBOX = ROOT / "inbox" / "raw"
 PROCESSED = ROOT / "inbox" / "processed"
-INGEST = ROOT / "scripts" / "ingest_hwp.py"
+INGEST = ROOT / "scripts" / "ingest_source.py"
 MANIFEST = INBOX / "manifest.json"
+SUPPORTED_SOURCE_EXTENSIONS = {".hwp", ".hwpx", ".doc", ".docx", ".txt", ".md"}
 
 
 def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -33,7 +34,7 @@ def current_branch() -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Batch-ingest files from inbox/raw.")
+    parser = argparse.ArgumentParser(description="Batch-ingest supported public-domain source files from inbox/raw.")
     parser.add_argument("--commit", action="store_true", help="Create one git commit for all converted files")
     parser.add_argument("--push", action="store_true", help="Push the current branch after committing")
     parser.add_argument("--rhwp-bin", help="Path to rhwp binary")
@@ -43,9 +44,10 @@ def main() -> int:
     if MANIFEST.exists():
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
-    files = sorted([*INBOX.glob("*.hwp"), *INBOX.glob("*.hwpx")])
+    files = sorted(path for path in INBOX.iterdir() if path.suffix.lower() in SUPPORTED_SOURCE_EXTENSIONS)
     if not files:
-        print(f"No HWP/HWPX files found in {INBOX}")
+        supported = ", ".join(sorted(SUPPORTED_SOURCE_EXTENSIONS))
+        print(f"No supported source files found in {INBOX} ({supported})")
         return 0
 
     PROCESSED.mkdir(parents=True, exist_ok=True)
@@ -88,7 +90,7 @@ def main() -> int:
         run(["git", "add", "inbox/processed"])
         names = ", ".join(path.stem for path in converted[:3])
         suffix = "" if len(converted) <= 3 else f" and {len(converted) - 3} more"
-        run(["git", "commit", "-m", f"Add converted HWP archives: {names}{suffix}"])
+        run(["git", "commit", "-m", f"Add converted source archives: {names}{suffix}"])
 
     if args.push:
         run(["git", "push", "-u", "origin", current_branch()])

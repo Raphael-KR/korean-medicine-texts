@@ -14,9 +14,11 @@
 - 현대인이 입력/편집한 저작권 보호 입력본
 - 역주본, 번역본, 해설본
 - 현대 논문, 교재, 강의자료
-- 배포 권한이 불명확한 HWP/HWPX 파일
+- 배포 권한이 불명확한 원본 파일
 
-HWP/HWPX 원본도 공개 배포합니다. 따라서 기여자는 원본 파일 자체도 공개 배포 가능한 자료인지 확인해야 합니다.
+원본 파일도 공개 배포합니다. 따라서 기여자는 원본 파일 자체도 공개 배포 가능한 자료인지 확인해야 합니다.
+
+현재 운영 스크립트가 지원하는 원본 형식은 `.hwp`, `.hwpx`, `.doc`, `.docx`, `.txt`, `.md`입니다. 다른 형식도 공개 배포 가능한 고전 원문이라면 수록 대상이 될 수 있으나, 변환 방식은 별도로 정해야 합니다.
 
 ## 수록 문헌
 
@@ -38,7 +40,7 @@ texts/
 
 sources/
   <stable-id>/
-    <original>.hwp  # 공개 배포 가능한 원본 HWP/HWPX
+    <original>.*    # 공개 배포 가능한 원본 파일
 
 catalog.json        # 기계가 읽기 좋은 전체 목록
 CATALOG.md          # 사람이 읽기 좋은 전체 목록
@@ -50,7 +52,7 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 
 각 문헌의 기본 참조 파일은 `texts/<stable-id>/source.md`입니다.
 
-`source.md`는 HWP 페이지별 파일을 따로 보존하지 않고 하나의 원문 Markdown으로 합친 파일입니다. HWP 조판 페이지는 의미 단위가 아니므로 기본 분할 기준으로 쓰지 않습니다. 다만 변환 추적을 위해 `<!-- rhwp-page: N -->` 주석은 남깁니다.
+`source.md`는 원본 파일에서 추출한 텍스트를 하나의 원문 Markdown으로 정리한 파일입니다. HWP/HWPX의 경우 조판 페이지를 별도 파일로 보존하지 않습니다. 조판 페이지는 의미 단위가 아니므로 기본 분할 기준으로 쓰지 않습니다. 다만 변환 추적을 위해 `<!-- rhwp-page: N -->` 주석은 남깁니다.
 
 향후에는 `chunks/`를 추가해 권, 편, 장, 조문, 처방명 같은 의미 단위 분할을 제공할 예정입니다.
 
@@ -58,7 +60,7 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 
 각 문헌의 `metadata.json`에는 `quality_status`가 있습니다.
 
-- `raw_converted`: HWP에서 Markdown으로 자동 변환한 원문
+- `raw_converted`: 원본 파일에서 Markdown으로 자동 변환한 원문
 - `reviewed`: 사람이 원문 대조를 일부 또는 전체 수행
 - `corrected`: 오류 교정이 반영된 상태
 
@@ -68,7 +70,7 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 
 기여 방법은 두 가지입니다.
 
-1. 비개발자: 공개 배포 가능한 HWP/HWPX 원문 파일과 서지 정보를 운영자에게 전달합니다.
+1. 비개발자: 공개 배포 가능한 원문 파일과 서지 정보를 운영자에게 전달합니다.
 2. GitHub 사용자: 직접 변환 결과를 추가하고 Pull Request를 보냅니다.
 
 자세한 절차는 [CONTRIBUTING.md](CONTRIBUTING.md)를 참고해 주세요.
@@ -79,6 +81,6 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 
 ## 변환 도구
 
-HWP/HWPX 변환에는 [Raphael-KR/rhwp](https://github.com/Raphael-KR/rhwp)의 `export-markdown` 기능을 사용합니다.
+HWP/HWPX 변환에는 [Raphael-KR/rhwp](https://github.com/Raphael-KR/rhwp)의 `export-markdown` 기능을 사용합니다. DOC/DOCX는 운영 환경의 `textutil`을 통해 텍스트로 추출하고, TXT/MD는 그대로 수집합니다.
 
 운영용 스크립트는 [scripts](scripts) 아래에 있습니다. 공개 사용자는 보통 이 스크립트를 직접 사용할 필요가 없습니다.

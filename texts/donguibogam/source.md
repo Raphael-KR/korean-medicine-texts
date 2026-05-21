@@ -3,11 +3,12 @@ id: "donguibogam"
 title: "동의보감"
 title_hanja: "東醫寶鑑"
 source: "../../sources/donguibogam/동의보감원문.hwp"
+source_format: "hwp"
 source_sha256: "e3fbaf639415bef8edc499782640da9c6c25b492a1fb94cae27c2cd1f10eda9b"
-converted_at: "2026-05-21T13:05:33.734566+00:00"
+converted_at: "2026-05-21T13:23:53.452408+00:00"
 conversion_tool: "rhwp v0.7.12"
 license: "Public Domain Mark 1.0"
-page_count: 724
+segment_count: 724
 ---
 
 # 동의보감
