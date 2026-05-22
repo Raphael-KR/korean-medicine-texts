@@ -1,6 +1,7 @@
 # 경악전서
 
 - Canonical Markdown: [source.md](source.md)
+- Collation notes: [collation.md](collation.md)
 - Original source file: [경악전서.hwpx](../../sources/gyeongakjeonseo/경악전서.hwpx)
 - Stable ID: `gyeongakjeonseo`
 - Title in Hanja: 景岳全書

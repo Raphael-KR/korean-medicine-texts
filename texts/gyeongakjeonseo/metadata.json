@@ -19,21 +19,29 @@
     {
       "line": 7670,
       "text": "傷용角黍炊飯",
+      "type": "suspected_hangul_conversion_error",
+      "status": "needs_collation",
       "note": "한글 '용'이 섞여 있어 원문 대조 필요"
     },
     {
       "line": 12390,
       "text": "最凶흉之候",
+      "type": "suspected_hangul_conversion_error",
+      "status": "needs_collation",
       "note": "한글 '흉'이 섞여 있어 원문 대조 필요"
     },
     {
       "line": 14495,
       "text": "本수輸",
+      "type": "suspected_hangul_conversion_error",
+      "status": "needs_collation",
       "note": "한글 '수'가 섞여 있어 원문 대조 필요"
     },
     {
       "line": 37129,
       "text": "或순脣瘡流注",
+      "type": "suspected_hangul_conversion_error",
+      "status": "needs_collation",
       "note": "한글 '순'이 섞여 있어 원문 대조 필요"
     }
   ],

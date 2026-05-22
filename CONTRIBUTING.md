@@ -35,6 +35,21 @@ GitHub 사용이 익숙하지 않다면 운영자에게 다음 정보를 전달�
 6. `catalog.json`과 `CATALOG.md`를 갱신합니다.
 7. Pull Request를 보냅니다.
 
+## 원문대조 기여
+
+원문대조 기여는 전체 본문을 모두 확인하는 작업이 아니라, 우선 `metadata.json`의 `known_issues`와 `texts/<id>/collation.md`에 기록된 의심 지점을 확인하는 방식으로 받습니다.
+
+특히 한자 본문 중간에 현대 한글 음절이 섞인 경우를 우선 대조합니다. 예를 들어 `葉수擣`, `最凶흉之候`처럼 한글 한 글자가 본문 사이에 들어간 항목입니다.
+
+원문대조 PR에는 다음을 포함해 주세요.
+
+- 대조한 원본 또는 판본
+- 수정한 `source.md` 위치
+- 갱신한 `metadata.json`의 `known_issues` 상태
+- 갱신한 `collation.md` 기록
+
+원문 확인 없이 추정으로 고치지 말아 주세요. 탕액편의 한글 약재명, 물명, 우리말 이명처럼 원문 자체에 포함된 한글 표기는 보존합니다.
+
 ## 자동 변환 사용
 
 로컬에서 변환하려면:
@@ -68,4 +83,5 @@ GitHub 사용이 익숙하지 않다면 운영자에게 다음 정보를 전달�
 - [ ] 폴더명은 stable ASCII ID를 사용했다.
 - [ ] `metadata.json`의 서지/권리/품질 정보가 채워져 있다.
 - [ ] `source.md`가 자동 품질 게이트를 통과한 AI-readable canonical 원문이다.
+- [ ] 변환 오류 의심 지점은 `known_issues`와 `collation.md`에 기록했거나, 원문대조 근거와 함께 처리했다.
 - [ ] `catalog.json`과 `CATALOG.md`가 갱신되어 있다.

@@ -1,6 +1,7 @@
 # 동의보감
 
 - Canonical Markdown: [source.md](source.md)
+- Collation notes: [collation.md](collation.md)
 - Original source file: [동의보감원문.hwpx](../../sources/donguibogam/동의보감원문.hwpx)
 - Stable ID: `donguibogam`
 - Title in Hanja: 東醫寶鑑

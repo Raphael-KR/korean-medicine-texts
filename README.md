@@ -38,6 +38,7 @@ texts/
     README.md       # 문헌별 안내
     source.md       # AI와 사람이 참조할 canonical Markdown 원문
     metadata.json   # 서지, 권리, 변환, 품질 메타데이터
+    collation.md    # 원문대조가 필요한 의심 지점과 처리 기록
 
 sources/
   <stable-id>/
@@ -73,6 +74,16 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 일부 파일에는 고전 원문 외에 현대 입력자가 남긴 "일러두기", 입력 방식 설명, 기호 설명 등이 포함될 수 있습니다. 이런 경우 `metadata.json`의 `has_modern_input_notes`와 `modern_input_note`에 별도 표시합니다.
 
 canonical `source.md`는 AI 참조용 원문 코퍼스이므로, 원본 파일에 현대 서두, 교정주, 음훈 각주, 미주가 포함되어 있더라도 필요하면 변환 과정에서 제거합니다. 제거 여부와 적용된 정제 규칙은 `metadata.json`의 `cleanup_applied`와 `cleanup`에 기록합니다.
+
+## 원문대조
+
+이 저장소의 원문대조는 전체 본문을 모두 대조하는 방식이 아니라, 우선 **한자 본문 중간에 현대 한글 음절이 섞인 의심 지점**을 중심으로 진행합니다.
+
+자동 변환과 QC/Lint 단계에서 의심 지점이 발견되면 `metadata.json`의 `known_issues`에 기록하고, 문헌별 `collation.md`에서 사람이 읽기 좋은 작업표로 관리합니다.
+
+원문대조 없이 추정으로 본문을 교정하지 않습니다. 탕액편의 한글 약재명, 물명, 우리말 이명처럼 원문 자체에 포함된 한글 표기는 보존합니다.
+
+자세한 기준은 [docs/COLLATION.md](docs/COLLATION.md)를 참고해 주세요.
 
 ## 변환 Manifest
 

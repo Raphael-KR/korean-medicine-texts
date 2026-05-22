@@ -21,7 +21,17 @@ Use this skill when the user gives a public-domain classical source text file an
    - object/replacement placeholders such as `￼` must remain below the threshold
    - if the gate fails, do not commit or push; report that OCR or a better text source is needed
 
-5. Return:
+5. After ingestion, run QC/Lint before publishing when requested:
+   - remove clear conversion residue such as page comments, standalone page numbers, and image placeholder labels
+   - record uncertain text problems in `metadata.json` as `known_issues`
+   - do not guess-correct the canonical text
+
+6. Keep source collation as a separate workflow:
+   - prioritize suspected Hangul conversion errors embedded in Hanja body text
+   - track these items in `texts/<id>/collation.md`
+   - only update `source.md` after checking the original source or another reliable witness
+
+7. Return:
    - the generated `texts/<id>/source.md` path
    - the GitHub URL printed by the script
    - any warnings from `rhwp`
@@ -30,6 +40,7 @@ Use this skill when the user gives a public-domain classical source text file an
 
 - Preserve the original file under `sources/<id>/`.
 - Do not edit normalized text in the same commit as ingestion unless the user explicitly asks.
+- Do not perform source collation in the ingestion commit. Use a separate commit for collation fixes and update `known_issues` plus `collation.md`.
 - If conversion fails, report the error and keep the repository unchanged except for any files the script staged; inspect `git status` before deciding whether cleanup is needed.
 - If the repository has no `origin` remote, stop after local conversion and tell the user that GitHub upload needs a remote.
 - If the user only asks for conversion, omit `--commit --push`.
