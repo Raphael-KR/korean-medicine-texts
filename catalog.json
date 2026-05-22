@@ -13,8 +13,8 @@
       "markdown_path": "texts/donguibogam/source.md",
       "rights_status": "public_domain_classical_text",
       "license": "Public Domain Mark 1.0",
-      "has_modern_input_notes": false,
-      "modern_input_note": "",
+      "has_modern_input_notes": true,
+      "modern_input_note": "원본 파일에 왕 관련 표식/들여쓰기 방식에 대한 현대 조판 설명과 그림삽입 표식이 있었으나, canonical source.md에서는 고전 원문만 남기고 제거함",
       "quality_status": "raw_converted",
       "segment_count": 737
     },
