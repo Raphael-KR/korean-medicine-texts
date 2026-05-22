@@ -14,6 +14,7 @@
 - Contains modern input notes: `True`
 - Modern input note: 원본 파일에 왕 관련 표식/들여쓰기 방식에 대한 현대 조판 설명과 그림삽입 표식이 있었으나, canonical source.md에서는 고전 원문만 남기고 제거함
 - Quality status: `raw_converted`
+- Quality note: 본문 중 한글 8자가 섞인 변환/입력 오류 후보가 확인되어 원문 대조가 필요합니다. 탕액편의 한글 약재명/물명 표기는 원문 요소로 보존했습니다. 자세한 위치는 `metadata.json`의 `known_issues`를 봐 주세요.
 - Converted at: `2026-05-21T15:00:27.761437+00:00`
 - Conversion tool: `rhwp v0.7.12`
 - Source segments: 737

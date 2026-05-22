@@ -14,11 +14,54 @@
   "cleanup_applied": true,
   "cleanup": {
     "removed_modern_layout_note_lines": 3,
-    "removed_image_placeholder_labels": 1
+    "removed_image_placeholder_labels": 4
   },
   "rights_status": "public_domain_classical_text",
   "license": "Public Domain Mark 1.0",
   "quality_status": "raw_converted",
+  "quality_note": "본문 중 한글 8자가 섞인 변환/입력 오류 후보가 확인됨. 원문 대조 후 교정 필요. 탕액편의 한글 약재명/물명 표기는 원문 요소로 보존함.",
+  "known_issues": [
+    {
+      "line": 5634,
+      "text": "葉수擣",
+      "note": "한글 '수'가 섞여 있어 원문 대조 필요"
+    },
+    {
+      "line": 21522,
+      "text": "慢火숙熬",
+      "note": "한글 '숙'이 섞여 있어 원문 대조 필요"
+    },
+    {
+      "line": 28332,
+      "text": "以脾과血",
+      "note": "한글 '과'가 섞여 있어 원문 대조 필요"
+    },
+    {
+      "line": 28839,
+      "text": "葉如苦거",
+      "note": "한글 '거'가 섞여 있어 원문 대조 필요"
+    },
+    {
+      "line": 28854,
+      "text": "葉似구花",
+      "note": "한글 '구'가 섞여 있어 원문 대조 필요"
+    },
+    {
+      "line": 29044,
+      "text": "又主風치",
+      "note": "한글 '치'가 섞여 있어 원문 대조 필요"
+    },
+    {
+      "line": 29224,
+      "text": "似자白皮",
+      "note": "한글 '자'가 섞여 있어 원문 대조 필요"
+    },
+    {
+      "line": 29575,
+      "text": "烹鍊하屑",
+      "note": "한글 '하'가 섞여 있어 원문 대조 필요"
+    }
+  ],
   "quality_gate": {
     "passed": true,
     "status": "raw_converted",
