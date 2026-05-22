@@ -14,6 +14,29 @@
   "rights_status": "public_domain_classical_text",
   "license": "Public Domain Mark 1.0",
   "quality_status": "raw_converted",
+  "quality_note": "본문 중 한글 4자가 섞인 변환/입력 오류 후보가 확인됨: line 7670 '傷용角黍炊飯', line 12390 '最凶흉之候', line 14495 '本수輸', line 37129 '或순脣瘡流注'. 원문 대조 후 교정 필요.",
+  "known_issues": [
+    {
+      "line": 7670,
+      "text": "傷용角黍炊飯",
+      "note": "한글 '용'이 섞여 있어 원문 대조 필요"
+    },
+    {
+      "line": 12390,
+      "text": "最凶흉之候",
+      "note": "한글 '흉'이 섞여 있어 원문 대조 필요"
+    },
+    {
+      "line": 14495,
+      "text": "本수輸",
+      "note": "한글 '수'가 섞여 있어 원문 대조 필요"
+    },
+    {
+      "line": 37129,
+      "text": "或순脣瘡流注",
+      "note": "한글 '순'이 섞여 있어 원문 대조 필요"
+    }
+  ],
   "quality_gate": {
     "passed": true,
     "status": "raw_converted",
