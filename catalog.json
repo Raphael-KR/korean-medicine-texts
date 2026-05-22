@@ -30,7 +30,7 @@
       "rights_status": "public_domain_classical_text",
       "license": "Public Domain Mark 1.0",
       "has_modern_input_notes": true,
-      "modern_input_note": "1994년 박윤희의 입력 경위, 사용 기호, 원문 배열 방식, 1995년 황덕연의 재교정/편집 안내가 포함되어 있음",
+      "modern_input_note": "원본 파일에는 1994년 박윤희의 입력 경위, 사용 기호, 원문 배열 방식, 1995년 황덕연의 재교정/편집 안내와 현대 주석/분류표가 포함되어 있었으나, canonical source.md에서는 고전 원문만 남기고 제거함",
       "quality_status": "raw_converted",
       "segment_count": 95
     },
