@@ -40,6 +40,17 @@ class ChunkCorpusTests(unittest.TestCase):
         self.assertEqual(chunks[0]["chunk_id"], "huangdineijingsuwen:00001")
         json.dumps(chunks[0], ensure_ascii=False)
 
+    def test_size_split_and_short_tail_merge_preserve_exact_source_slice(self) -> None:
+        source = self.make_source(
+            "# 제목\n性命論\n첫 문단의 긴 본문\n\n두 번째 문단의 긴 본문\n\n짧은 꼬리\n"
+        )
+        chunks = make_chunks("donguisusebowon", source, "e" * 64, max_chars=18, min_chars=20)
+        source_lines = source.read_text(encoding="utf-8").splitlines()
+        self.assertGreater(len(chunks), 1)
+        for chunk in chunks:
+            exact_slice = "\n".join(source_lines[chunk["line_start"] - 1 : chunk["line_end"]])
+            self.assertEqual(chunk["text"], exact_slice)
+
 
 if __name__ == "__main__":
     unittest.main()

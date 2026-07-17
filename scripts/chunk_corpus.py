@@ -155,8 +155,9 @@ def make_chunks(
         if current:
             if chunks and len("\n".join(current).strip()) < min_chars and chunks[-1]["headings"] == section_headings:
                 previous = chunks.pop()
-                merged = previous["text"].splitlines() + current
-                chunks.append(_chunk(source_id, source_sha256, section_headings, previous["line_start"], line_end, merged))
+                merged_start = previous["line_start"]
+                merged = lines[merged_start - 1 : line_end]
+                chunks.append(_chunk(source_id, source_sha256, section_headings, merged_start, line_end, merged))
             else:
                 chunks.append(_chunk(source_id, source_sha256, section_headings, current_start, line_end, current))
 
@@ -166,7 +167,16 @@ def make_chunks(
 
 
 def _chunk(source_id: str, source_sha256: str, headings: list[str], line_start: int, line_end: int, lines: list[str]) -> dict:
-    text = "\n".join(lines).strip()
+    chunk_lines = list(lines)
+    while chunk_lines and not chunk_lines[0].strip():
+        chunk_lines.pop(0)
+        line_start += 1
+    while chunk_lines and not chunk_lines[-1].strip():
+        chunk_lines.pop()
+        line_end -= 1
+    if not chunk_lines:
+        raise ValueError("cannot create an empty retrieval chunk")
+    text = "\n".join(chunk_lines)
     return {
         "schema_version": SCHEMA_VERSION,
         "chunk_id": "",
