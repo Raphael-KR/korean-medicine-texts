@@ -65,6 +65,65 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 
 현대 논문·가이드라인은 이 공개 고전 원문 코퍼스에 포함하지 않습니다. 임상 효과와 안전성에 관한 답변에는 별도의 최신 외부 근거가 필요합니다.
 
+#### `ground-hanmedicine-answers` 설치
+
+이 스킬은 Codex용입니다. 원문 전체를 스킬 폴더에 복제하지 않으므로, **저장소와 스킬을 모두 설치**해야 합니다. Python 3 표준 라이브러리 외에 별도 검색 의존성은 없습니다.
+
+1. 원문 저장소를 클론합니다.
+
+   ```bash
+   git clone https://github.com/Raphael-KR/korean-medicine-texts.git
+   cd korean-medicine-texts
+   ```
+
+2. Codex에 다음과 같이 요청하는 방법을 권장합니다.
+
+   ```text
+   Raphael-KR/korean-medicine-texts 저장소의
+   skills/ground-hanmedicine-answers 스킬을 전역 설치해줘.
+   ```
+
+   또는 macOS/Linux에서 Codex의 기본 스킬 설치기를 직접 실행할 수 있습니다.
+
+   ```bash
+   python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
+     --repo Raphael-KR/korean-medicine-texts \
+     --path skills/ground-hanmedicine-answers
+   ```
+
+3. 설치가 끝난 다음 대화부터 스킬을 사용할 수 있습니다. 저장소 밖의 작업공간에서 사용할 경우에는 원문 저장소의 절대경로를 지정합니다.
+
+   ```bash
+   export KOREAN_MEDICINE_TEXTS_ROOT="/absolute/path/to/korean-medicine-texts"
+   ```
+
+   이 저장소 자체를 Codex 작업공간으로 열었다면 환경변수 없이 현재 작업공간에서 코퍼스를 자동 발견합니다.
+
+4. 설치와 코퍼스 연결을 확인합니다.
+
+   ```bash
+   python3 "${CODEX_HOME:-$HOME/.codex}/skills/ground-hanmedicine-answers/scripts/search_corpus.py" \
+     "桂枝湯" --root "$PWD" --source-id donguibogam --max-results 1
+   ```
+
+#### 사용 예시
+
+명시적으로 호출하려면 프롬프트에 `$ground-hanmedicine-answers`를 포함합니다.
+
+```text
+$ground-hanmedicine-answers 동의보감에서 桂枝湯 관련 구절을 찾아
+원문 경로와 행 번호, 텍스트 품질 상태를 함께 알려줘.
+```
+
+```text
+$ground-hanmedicine-answers 소갈의 고전 문헌상 설명과 현대 당뇨병 임상 근거를
+서로 섞지 말고 구분해서 정리해줘.
+```
+
+스킬은 고전 원문의 존재·출전·문맥을 이 저장소에서 확인합니다. 현대 치료 효과, 안전성, 상호작용, 가이드라인은 최신 외부 근거를 별도로 검색해야 하며, 고전 원문만으로 현대 임상 효과를 주장하지 않습니다.
+
+업데이트할 때는 GitHub 저장소를 정본으로 삼고, 전역 설치본을 직접 편집하지 마세요. Codex에 같은 GitHub 경로의 스킬을 최신 버전으로 다시 설치해 달라고 요청하면 됩니다.
+
 ## 품질 상태
 
 각 문헌의 `metadata.json`에는 `quality_status`가 있습니다.
