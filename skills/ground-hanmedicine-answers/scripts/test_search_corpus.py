@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
-from search_corpus import search
+from search_corpus import default_repo_root, search
 
 
 class SearchCorpusTests(unittest.TestCase):
@@ -62,6 +64,11 @@ class SearchCorpusTests(unittest.TestCase):
         result = search("없는말", self.make_repo())
         self.assertEqual(result["match_count"], 0)
         self.assertEqual(result["searched_sources"], ["sample"])
+
+    def test_environment_selects_global_install_corpus_root(self) -> None:
+        root = self.make_repo()
+        with patch.dict(os.environ, {"KOREAN_MEDICINE_TEXTS_ROOT": str(root)}):
+            self.assertEqual(default_repo_root(), root)
 
 
 if __name__ == "__main__":

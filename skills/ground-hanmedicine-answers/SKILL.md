@@ -20,12 +20,15 @@ Ground material claims in retrievable evidence, preserve provenance, and separat
 
 ## Corpus Retrieval
 
-From this skill directory, use:
+Run from the `korean-medicine-texts` repository root, or pass its path explicitly:
 
 ```bash
-python3 scripts/search_corpus.py "검색어"
-python3 scripts/search_corpus.py "검색어" --source-id donguibogam --context 1
+python3 skills/ground-hanmedicine-answers/scripts/search_corpus.py "검색어"
+python3 skills/ground-hanmedicine-answers/scripts/search_corpus.py "검색어" --source-id donguibogam --context 1
+python3 /path/to/search_corpus.py "검색어" --root /path/to/korean-medicine-texts
 ```
+
+The script discovers the repository from `KOREAN_MEDICINE_TEXTS_ROOT`, the current working directory, or its bundled checkout location, in that order.
 
 The search output is retrieval evidence, not proof that the matched passage has been collated or clinically validated. Open every passage used in the answer and inspect its adjacent context, `metadata.json`, and `collation.md`.
 

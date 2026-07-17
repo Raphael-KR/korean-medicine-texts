@@ -5,13 +5,30 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
 
 
+def is_corpus_root(path: Path) -> bool:
+    return (path / "catalog.json").is_file() and (path / "texts").is_dir()
+
+
 def default_repo_root() -> Path:
-    return Path(__file__).resolve().parents[3]
+    configured = os.environ.get("KOREAN_MEDICINE_TEXTS_ROOT")
+    if configured:
+        return Path(configured).expanduser()
+
+    current = Path.cwd().resolve()
+    for candidate in (current, *current.parents):
+        if is_corpus_root(candidate):
+            return candidate
+
+    bundled = Path(__file__).resolve().parents[3]
+    if is_corpus_root(bundled):
+        return bundled
+    return current
 
 
 def inside(path: Path, root: Path) -> bool:
