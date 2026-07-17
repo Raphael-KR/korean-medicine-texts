@@ -15,8 +15,7 @@
       "license": "Public Domain Mark 1.0",
       "has_modern_input_notes": true,
       "modern_input_note": "원본 파일에 왕 관련 표식/들여쓰기 방식에 대한 현대 조판 설명과 그림삽입 표식이 있었으나, canonical source.md에서는 고전 원문만 남기고 제거함",
-      "quality_status": "raw_converted",
-      "segment_count": 737
+      "quality_status": "raw_converted"
     },
     {
       "id": "donguisusebowon",
@@ -31,8 +30,7 @@
       "license": "Public Domain Mark 1.0",
       "has_modern_input_notes": true,
       "modern_input_note": "원본 파일에는 1994년 박윤희의 입력 경위, 사용 기호, 원문 배열 방식, 1995년 황덕연의 재교정/편집 안내와 현대 주석/분류표가 포함되어 있었으나, canonical source.md에서는 고전 원문만 남기고 제거함",
-      "quality_status": "raw_converted",
-      "segment_count": 95
+      "quality_status": "raw_converted"
     },
     {
       "id": "gyeongakjeonseo",
@@ -47,8 +45,7 @@
       "license": "Public Domain Mark 1.0",
       "has_modern_input_notes": false,
       "modern_input_note": "",
-      "quality_status": "raw_converted",
-      "segment_count": 873
+      "quality_status": "raw_converted"
     },
     {
       "id": "huangdineijinglingshu",
@@ -63,8 +60,7 @@
       "license": "Public Domain Mark 1.0",
       "has_modern_input_notes": true,
       "modern_input_note": "원본 파일 앞부분의 현대 입력/교정 안내와 본문 중 현대 교정주·음훈 각주는 canonical source.md에서 제거하고, 고전 원문만 남김",
-      "quality_status": "raw_converted",
-      "segment_count": 81
+      "quality_status": "raw_converted"
     },
     {
       "id": "huangdineijingsuwen",
@@ -79,8 +75,7 @@
       "license": "Public Domain Mark 1.0",
       "has_modern_input_notes": true,
       "modern_input_note": "원본 파일 앞부분의 현대 입력/교정 안내와 본문 중 현대 교정주·음훈 각주는 canonical source.md에서 제거하고, 고전 원문만 남김",
-      "quality_status": "raw_converted",
-      "segment_count": 81
+      "quality_status": "raw_converted"
     }
   ]
 }

@@ -18,6 +18,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import quote
 
+from chunk_corpus import write_chunks
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RHWP = ROOT / "vendor" / "rhwp" / "target" / "release" / "rhwp"
@@ -130,7 +132,6 @@ def evaluate_ai_readability(
     min_text_chars: int,
     max_placeholder_ratio: float,
     min_readable_ratio: float,
-    segment_count: int | None = None,
 ) -> QualityReport:
     body = "\n".join(text for _, text in pages)
     nonspace_chars = [char for char in body if not char.isspace()]
@@ -158,7 +159,7 @@ def evaluate_ai_readability(
         passed=passed,
         reasons=reasons,
         metrics={
-            "segments": segment_count or len(pages),
+            "converted_page_count": len(pages),
             "nonspace_chars": nonspace_count,
             "readable_text_chars": readable_count,
             "cjk_or_hangul_chars": cjk_count,
@@ -422,7 +423,6 @@ def source_markdown(title: str, source_rel: str, metadata: dict, pages: list[tup
         "converted_at": metadata["converted_at"],
         "conversion_tool": metadata["conversion_tool"],
         "license": metadata["license"],
-        "segment_count": metadata["segment_count"],
     }
     lines = ["---"]
     for key, value in front_matter.items():
@@ -440,7 +440,6 @@ def source_markdown(title: str, source_rel: str, metadata: dict, pages: list[tup
 
 def readme_markdown(title: str, source_rel: str, metadata: dict) -> str:
     source_path = metadata["source_path"]
-    segment_count = metadata["segment_count"]
     modern_note = metadata.get("modern_input_note") or "없음"
     return f"""# {title}
 
@@ -460,7 +459,6 @@ def readme_markdown(title: str, source_rel: str, metadata: dict) -> str:
 - Quality status: `{metadata["quality_status"]}`
 - Converted at: `{metadata["converted_at"]}`
 - Conversion tool: `{metadata["conversion_tool"]}`
-- Source segments: {segment_count}
 """
 
 
@@ -480,7 +478,6 @@ def catalog_entry(metadata: dict) -> dict:
         "has_modern_input_notes": metadata.get("has_modern_input_notes", False),
         "modern_input_note": metadata.get("modern_input_note", ""),
         "quality_status": metadata["quality_status"],
-        "segment_count": metadata.get("segment_count", metadata.get("page_count")),
     }
 
 
@@ -508,19 +505,18 @@ def update_catalog() -> None:
     lines = [
         "# 수록 문헌 목록",
         "",
-        "| ID | 서명 | 한자 | 저자 | 시대 | 원본 형식 | 품질 | 구간 | 원문 | Markdown |",
-        "|---|---|---|---|---|---|---|---|---|---|",
+        "| ID | 서명 | 한자 | 저자 | 시대 | 원본 형식 | 품질 | 원문 | Markdown |",
+        "|---|---|---|---|---|---|---|---|---|",
     ]
     for item in entries:
         lines.append(
-            "| {id} | {title_ko} | {title_hanja} | {author} | {era} | {source_format} | {quality_status} | {segment_count} | [{source_name}]({source_path}) | [source.md]({markdown_path}) |".format(
+            "| {id} | {title_ko} | {title_hanja} | {author} | {era} | {source_format} | {quality_status} | [{source_name}]({source_path}) | [source.md]({markdown_path}) |".format(
                 id=item["id"],
                 title_ko=item["title_ko"] or "",
                 title_hanja=item["title_hanja"] or "",
                 author=item["author"] or "",
                 era=item["era"] or "",
                 source_format=item["source_format"],
-                segment_count=item["segment_count"],
                 quality_status=item["quality_status"],
                 source_name=Path(item["source_path"]).name,
                 source_path=item["source_path"],
@@ -591,7 +587,6 @@ def main() -> int:
     )
     parser.add_argument("--license", default="Public Domain Mark 1.0", help="Data license/mark")
     parser.add_argument("--quality-status", default="raw_converted", help="raw_converted, reviewed, corrected, etc.")
-    parser.add_argument("--segment-count", type=int, help="Override segment count for split or manually ranged texts")
     parser.add_argument("--body-start", default="", help="Regex for the first body line to keep")
     parser.add_argument("--body-end-before", default="", help="Regex for the first body line to exclude")
     parser.add_argument(
@@ -682,7 +677,6 @@ def main() -> int:
         tmp_text_dir.mkdir(parents=True, exist_ok=True)
         raw_dir.mkdir(parents=True, exist_ok=True)
         pages, asset_dirs, conversion_tool, info_stdout, info_stderr = convert_source(input_path, raw_dir, rhwp)
-        original_page_count = len(pages)
         if cleanup_applied:
             pages, cleanup_report = cleanup_pages(
                 pages,
@@ -700,7 +694,6 @@ def main() -> int:
             min_text_chars=args.min_text_chars,
             max_placeholder_ratio=args.max_placeholder_ratio,
             min_readable_ratio=args.min_readable_ratio,
-            segment_count=args.segment_count,
         )
         if not quality_report.passed and not args.skip_quality_gate:
             fail_quality_gate(quality_report)
@@ -760,8 +753,7 @@ def main() -> int:
         },
         "converted_at": datetime.now(timezone.utc).isoformat(),
         "conversion_tool": conversion_tool,
-        "segment_count": args.segment_count or len(pages),
-        "page_count": original_page_count if source_target.suffix.lower() in {".hwp", ".hwpx"} and not cleanup_applied else None,
+        "converted_page_count": len(pages) if input_path.suffix.lower() in {".hwp", ".hwpx"} else None,
         "asset_dirs": asset_dirs,
         "conversion_info_stdout": info_stdout,
         "conversion_info_stderr": info_stderr,
@@ -776,6 +768,7 @@ def main() -> int:
         source_markdown(title, source_rel, metadata, pages),
         encoding="utf-8",
     )
+    chunks_path = write_chunks(text_dir, metadata)
 
     readme_path = text_dir / "README.md"
     readme_path.write_text(

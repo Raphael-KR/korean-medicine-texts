@@ -8,7 +8,6 @@ source_sha256: "25434bb1d076ad11c8070022131db40df8724070140503fe5183629529f9374f
 converted_at: "2026-05-21T15:00:41.472765+00:00"
 conversion_tool: "rhwp v0.7.12"
 license: "Public Domain Mark 1.0"
-segment_count: 95
 ---
 
 # 동의수세보원

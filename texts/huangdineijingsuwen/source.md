@@ -8,7 +8,6 @@ source_sha256: "51184bbee08bc8e07afaecd82619354ce5e8fc8f0faa92fa043e7968f052526f
 converted_at: "2026-05-21T15:21:16.029154+00:00"
 conversion_tool: "rhwp v0.7.12"
 license: "Public Domain Mark 1.0"
-segment_count: 81
 ---
 
 # 황제내경소문

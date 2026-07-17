@@ -46,7 +46,6 @@ def add_ingest_options(cmd: list[str], item: dict, rhwp_bin: str | None) -> None
         "rights_status": "--rights-status",
         "license": "--license",
         "quality_status": "--quality-status",
-        "segment_count": "--segment-count",
         "body_start": "--body-start",
         "body_end_before": "--body-end-before",
     }

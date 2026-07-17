@@ -8,7 +8,6 @@ source_sha256: "f1379f4a539f3d2be98203f5a728695ba38f04da75595ad469851fc93cc05630
 converted_at: "2026-05-21T15:00:27.761437+00:00"
 conversion_tool: "rhwp v0.7.12"
 license: "Public Domain Mark 1.0"
-segment_count: 737
 ---
 
 # 동의보감
