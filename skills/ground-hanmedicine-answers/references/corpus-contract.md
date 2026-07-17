@@ -7,8 +7,9 @@ Use the repository in this order:
 1. `catalog.json` — canonical registry of available works and stable IDs
 2. `texts/<stable-id>/metadata.json` — rights, conversion, quality, and known-issue metadata
 3. `texts/<stable-id>/source.md` — canonical AI-readable classical text
-4. `texts/<stable-id>/collation.md` — suspected defects and source-collation history
-5. `sources/<stable-id>/` — original conversion input when source comparison is required
+4. `texts/<stable-id>/chunks.jsonl` — derived retrieval units that point back to canonical source lines
+5. `texts/<stable-id>/collation.md` — suspected defects and source-collation history
+6. `sources/<stable-id>/` — original conversion input when source comparison is required
 
 Do not treat a title recalled from model knowledge as present in the corpus. Confirm it in `catalog.json`.
 
@@ -36,5 +37,6 @@ A passed readability gate means the text is machine-readable. It does not establ
 
 - This repository contains public-domain classical source texts, not modern clinical papers or guidelines.
 - Do not add copyrighted modern books, translations, papers, or private clinical material to this repository.
+- This repository provides a portable knowledge base for external AI/RAG consumers. It does not provide a search service, embeddings, a vector database, model serving, reranking, or an operational RAG application.
 - Do not describe the corpus as a vector database or claim semantic retrieval unless an actual index and retrieval result exist.
-- If a future `chunks/` directory exists, inspect its schema before citing chunk IDs. Do not infer them from headings or line ranges.
+- Treat `chunks.jsonl` as a derived locator, not a textual authority. Inspect its schema and verify any cited passage against `source.md`, metadata, and relevant collation notes.

@@ -2,6 +2,10 @@
 
 Use this skill to convert a public-domain classical source into the repository's canonical Markdown and reproducible retrieval chunks. It does **not** create embeddings, a vector database, or a claim of semantic search by itself.
 
+## Repository Boundary
+
+Stop when the source archive, canonical Markdown, provenance/quality metadata, structure-aware chunks, catalog entry, validation, and required QC are complete. Search services, APIs, user interfaces, embeddings, vector stores, model serving, rerankers, retrieval evaluation services, and operational RAG applications belong to separate consuming systems. Do not design or implement them in this repository unless the user explicitly changes the repository scope.
+
 ## Output Contract
 
 For each accepted source ID, create and keep together:
@@ -41,4 +45,5 @@ python3 scripts/chunk_corpus.py --source-id stable-id
 - Every retrieval result must retain its `chunk_id`, `source_id`, `source_sha256`, `line_start`, and `line_end`; a chunk is a locator, not proof of textual accuracy.
 - Keep source collation separate from ingestion. Record uncertain conversion text in `known_issues`/`collation.md`; never guess-correct canonical text.
 - Do not claim a vector store, semantic retrieval, or embedding search unless a separate, actual index and query result exist.
+- Do not propose or implement a search-service layer as a default next step after ingestion; report the knowledge-base artifacts and stop at the repository boundary.
 - Do not stage, commit, push, or move the inbox original before the required user QC passes.
