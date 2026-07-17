@@ -58,6 +58,13 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 
 향후에는 `chunks/`를 추가해 권, 편, 장, 조문, 처방명 같은 의미 단위 분할을 제공할 예정입니다.
 
+### Codex 스킬
+
+- [`skills/ground-hanmedicine-answers`](skills/ground-hanmedicine-answers/SKILL.md): `catalog.json`, 문헌별 `metadata.json`, canonical `source.md`, `collation.md`를 근거 사슬로 사용해 고전 원문을 검색·검증하고, 역사적 문헌 근거와 현대 임상 근거를 분리해 답변합니다.
+- [`skills/hwp-github-ingest`](skills/hwp-github-ingest/SKILL.md): 공개 가능한 고전 원본을 이 저장소의 Markdown 아카이브 구조로 변환합니다.
+
+현대 논문·가이드라인은 이 공개 고전 원문 코퍼스에 포함하지 않습니다. 임상 효과와 안전성에 관한 답변에는 별도의 최신 외부 근거가 필요합니다.
+
 ## 품질 상태
 
 각 문헌의 `metadata.json`에는 `quality_status`가 있습니다.

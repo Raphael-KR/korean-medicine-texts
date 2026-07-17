@@ -1,0 +1,4 @@
+interface:
+  display_name: "한의학 원문 근거 답변"
+  short_description: "고전 원문 검색·검증과 안전한 한의학 근거 답변"
+  default_prompt: "Use $ground-hanmedicine-answers to verify this Korean medicine question against the canonical classical-text corpus and clearly separate historical claims from modern clinical evidence."
