@@ -1,11 +1,5 @@
 # Repository Instructions
 
-## graphify
-
-- `graphify` (`~/.Codex/skills/graphify/SKILL.md`) - any input to knowledge graph.
-- Trigger: `/graphify`
-- When the user types `/graphify`, invoke the Skill tool with `skill: "graphify"` before doing anything else.
-
 ## 원문 변환/커밋/푸시 운영 원칙
 
 1. `inbox/raw`의 `.hwp`, `.hwpx`, `.doc`, `.docx`, `.txt`, `.md` 파일을 확인한다.
