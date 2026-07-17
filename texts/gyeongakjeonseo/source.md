@@ -8,7 +8,6 @@ source_sha256: "94c6aa267dbb651462ae1060777f63f38252b7fb529b0358b8e96de166ff5d01
 converted_at: "2026-05-21T15:00:51.542498+00:00"
 conversion_tool: "rhwp v0.7.12"
 license: "Public Domain Mark 1.0"
-segment_count: 873
 ---
 
 # 경악전서

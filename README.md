@@ -115,15 +115,13 @@ canonical `source.md`는 AI 참조용 원문 코퍼스이므로, 원본 파일�
         "title_ko": "황제내경소문",
         "title_hanja": "黃帝內經素問",
         "body_start": "^上古天眞論篇 第一$",
-        "body_end_before": "^九鍼十二原 第一\\(法天\\)$",
-        "segment_count": 81
+        "body_end_before": "^九鍼十二原 第一\\(法天\\)$"
       },
       {
         "id": "huangdineijinglingshu",
         "title_ko": "황제내경영추",
         "title_hanja": "黃帝內經靈樞",
-        "body_start": "^九鍼十二原 第一\\(法天\\)$",
-        "segment_count": 81
+        "body_start": "^九鍼十二原 第一\\(法天\\)$"
       }
     ]
   }
