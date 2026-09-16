@@ -7,3 +7,4 @@
 | gyeongakjeonseo | 경악전서 | 景岳全書 |  |  | hwpx | raw_converted | [경악전서.hwpx](sources/gyeongakjeonseo/경악전서.hwpx) | [source.md](texts/gyeongakjeonseo/source.md) |
 | huangdineijinglingshu | 황제내경영추 | 黃帝內經靈樞 |  |  | hwpx | raw_converted | [황제내경소문.hwpx](sources/huangdineijingsuwen/황제내경소문.hwpx) | [source.md](texts/huangdineijinglingshu/source.md) |
 | huangdineijingsuwen | 황제내경소문 | 黃帝內經素問 |  |  | hwpx | raw_converted | [황제내경소문.hwpx](sources/huangdineijingsuwen/황제내경소문.hwpx) | [source.md](texts/huangdineijingsuwen/source.md) |
+| uihagipmun | 의학입문 | 醫學入門 | 李梴 |  | hwpx | raw_converted | [의학입문 원문.hwpx](sources/uihagipmun/의학입문 원문.hwpx) | [source.md](texts/uihagipmun/source.md) |

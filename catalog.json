@@ -76,6 +76,21 @@
       "has_modern_input_notes": true,
       "modern_input_note": "원본 파일 앞부분의 현대 입력/교정 안내와 본문 중 현대 교정주·음훈 각주는 canonical source.md에서 제거하고, 고전 원문만 남김",
       "quality_status": "raw_converted"
+    },
+    {
+      "id": "uihagipmun",
+      "title_ko": "의학입문",
+      "title_hanja": "醫學入門",
+      "author": "李梴",
+      "era": "",
+      "source_path": "sources/uihagipmun/의학입문 원문.hwpx",
+      "source_format": "hwpx",
+      "markdown_path": "texts/uihagipmun/source.md",
+      "rights_status": "public_domain_classical_text",
+      "license": "Public Domain Mark 1.0",
+      "has_modern_input_notes": true,
+      "modern_input_note": "원본에 한글 음훈 주석 및 한자 사이 한글 혼입이 있음. 원문대조 전 임의 삭제·교정하지 않고 보존함.",
+      "quality_status": "raw_converted"
     }
   ]
 }

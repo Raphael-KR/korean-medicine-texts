@@ -1,0 +1,62 @@
+{
+  "id": "uihagipmun",
+  "title": "의학입문",
+  "title_ko": "의학입문",
+  "title_hanja": "醫學入門",
+  "author": "李梴",
+  "era": "",
+  "source_path": "sources/uihagipmun/의학입문 원문.hwpx",
+  "source_format": "hwpx",
+  "source_sha256": "779ae40787dcd554e75e5bd59f952b1768720bf9e72952c9d3623a0c44b0c709",
+  "source_note": "사용자 제공 의학입문 원문 HWPX. 입력본의 상세 판본과 입력 경위는 미확인. 사용자 변환 QC 통과.",
+  "has_modern_input_notes": true,
+  "modern_input_note": "원본에 한글 음훈 주석 및 한자 사이 한글 혼입이 있음. 원문대조 전 임의 삭제·교정하지 않고 보존함.",
+  "cleanup_applied": false,
+  "cleanup": {
+    "body_start_pattern": "",
+    "body_end_before_pattern": "",
+    "removed_preface_lines": 0,
+    "removed_trailing_lines": 0,
+    "removed_editorial_note_lines": 0,
+    "removed_inline_note_refs": 0,
+    "korean_body_chars": 0
+  },
+  "rights_status": "public_domain_classical_text",
+  "license": "Public Domain Mark 1.0",
+  "quality_status": "raw_converted",
+  "quality_gate": {
+    "passed": true,
+    "status": "raw_converted",
+    "reasons": [],
+    "metrics": {
+      "converted_page_count": 772,
+      "nonspace_chars": 763636,
+      "readable_text_chars": 703940,
+      "cjk_or_hangul_chars": 688299,
+      "object_placeholder_chars": 0,
+      "object_placeholder_ratio": 0.0,
+      "readable_char_ratio": 0.921827
+    },
+    "thresholds": {
+      "min_text_chars": 500,
+      "max_placeholder_ratio": 0.02,
+      "min_readable_ratio": 0.25
+    }
+  },
+  "converted_at": "2026-09-16T16:42:14.929599+00:00",
+  "conversion_tool": "rhwp v0.7.12",
+  "converted_page_count": 772,
+  "asset_dirs": [],
+  "conversion_info_stdout": "파일: ./inbox/raw/의학입문 원문.hwpx\n크기: 1514592 bytes\n버전: 5.1.0.0\n압축: 아니오\n암호화: 아니오\n배포용: 아니오\n구역 수: 1\n페이지 수: 772\n구역0 용지: 59528×79372 HWPUNIT, 방향=세로 (여백: 좌8504 우8504 상5668 하2652)\n  머리말여백=4252 꼬리말여백=4252 제본여백=0\n폰트(한글): [0]한양해서, [1]휴먼옛체, [2]명조, [3]한양신명조, [4]한양중고딕, [5]한양견고딕\n폰트(영어): [0]한양해서, [1]명조, [2]한양신명조, [3]한양중고딕, [4]한양견고딕, [5]한양궁서\n폰트(한자): [0]한양해서, [1]명조, [2]한양신명조, [3]한양중고딕\n폰트(일어): [0]한양해서, [1]명조, [2]한양신명조, [3]한양중고딕\n폰트(기타): [0]한양해서, [1]명조, [2]한양신명조\n폰트(기호): [0]한양해서, [1]명조, [2]한양신명조, [3]한양중고딕\n폰트(사용자): [0]한양해서, [1]명조\n스타일: 바탕글, 본문(신명조10), 본문(중고딕10), 작은제목(중고딕15), 중간제목(옛체20), 큰제목(견고딕20), 큰제목(견고딕30), 머리말(신명조9), 머리말(중고딕9), 각주내용(신명조9), 각주, 개요 1, 본문명조, 수식, 쪽번호\n총 문단 수: 13888\nParaShape: 24 (PS/문단 = 0.002)\nCharShape: 62 (CS/문단 = 0.004)\nOrigin 추정: HWP3 변환본 추정 (margin_bottom -1600 HU 보정 적용)",
+  "conversion_info_stderr": "",
+  "known_issues": [
+    "한글 포함 본문 438행: 음훈 주석과 한자 혼입의 구분 및 원문대조 필요. collation.md 참조.",
+    "의학입문 전용 구조 청킹 프로필 없음. paragraph-fallback-v1로 생성; 권·편·조문 구조 QC 미완료.",
+    "상세 판본 및 전자 입력본의 배포 권리 미확인."
+  ],
+  "user_qc": {
+    "status": "passed",
+    "confirmed_at": "2026-09-16T16:44:50.502086+00:00",
+    "scope": "사용자 변환 품질 QC 및 commit/push 승인. 개별 원문대조 완료를 뜻하지 않음."
+  }
+}
