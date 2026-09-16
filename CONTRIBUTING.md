@@ -36,7 +36,7 @@ GitHub 사용이 익숙하지 않다면 운영자에게 다음 정보를 전달�
 3. 원본 파일을 `sources/<id>/`에 추가합니다.
 4. Markdown 원문을 `texts/<id>/source.md`에 추가합니다.
 5. `texts/<id>/metadata.json`을 작성합니다.
-6. `catalog.json`과 `CATALOG.md`를 갱신합니다.
+6. `catalog.json`, `CATALOG.md`, 루트 `README.md`의 수록 목록을 갱신합니다. 문헌별 `README.md`에 산출물과 검증 상태를 안내하고, `docs/CHUNKING.md`에 적용 프로필과 미검증 사항을 반영합니다.
 7. Pull Request를 보냅니다.
 
 ## 원문대조 기여
@@ -88,4 +88,5 @@ GitHub 사용이 익숙하지 않다면 운영자에게 다음 정보를 전달�
 - [ ] `metadata.json`의 서지/권리/품질 정보가 채워져 있다.
 - [ ] `source.md`가 자동 품질 게이트를 통과한 AI-readable canonical 원문이다.
 - [ ] 변환 오류 의심 지점은 `known_issues`와 `collation.md`에 기록했거나, 원문대조 근거와 함께 처리했다.
-- [ ] `catalog.json`과 `CATALOG.md`가 갱신되어 있다.
+- [ ] `catalog.json`, `CATALOG.md`, 루트 `README.md`의 수록 목록이 일치한다.
+- [ ] 문헌별 `README.md`와 `docs/CHUNKING.md`가 실제 산출물·청킹 방식·검증 상태를 반영한다.

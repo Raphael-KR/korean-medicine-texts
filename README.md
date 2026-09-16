@@ -37,6 +37,7 @@
 - [경악전서](texts/gyeongakjeonseo/source.md)
 - [황제내경소문](texts/huangdineijingsuwen/source.md)
 - [황제내경영추](texts/huangdineijinglingshu/source.md)
+- [의학입문](texts/uihagipmun/source.md)
 
 ## 데이터 구조
 
@@ -65,7 +66,7 @@ CATALOG.md          # 사람이 읽기 좋은 전체 목록
 
 `source.md`는 원본 파일에서 추출한 텍스트를 하나의 원문 Markdown으로 정리한 파일입니다. HWP/HWPX의 경우 조판 페이지를 별도 파일로 보존하지 않습니다. 조판 페이지는 의미 단위가 아니므로 기본 분할 기준으로 쓰지 않습니다.
 
-`chunks.jsonl`은 권, 편, 장, 조문, 처방명 같은 문헌별 구조를 기준으로 나눈 파생 검색 단위입니다. 스키마와 재생성 방법은 [구조 기반 검색 청킹](docs/CHUNKING.md)을 참고하세요.
+`chunks.jsonl`은 권, 편, 장, 조문, 처방명 같은 문헌별 구조를 기준으로 나눈 파생 검색 단위입니다. 의학입문은 전용 구조 프로필이 없어 원문 행을 보존하는 길이 기반 기본 분할(`paragraph-fallback-v1`)을 사용합니다. 스키마와 재생성 방법은 [구조 기반 검색 청킹](docs/CHUNKING.md)을 참고하세요.
 
 이 저장소는 청크까지 제공하고 검색 방식은 규정하지 않습니다. 외부 AI/RAG 시스템은 `catalog.json`에서 문헌을 발견하고, `chunks.jsonl`을 인덱싱한 뒤, 인용이나 문자 단위 판단이 필요할 때 `source.md`, `metadata.json`, `collation.md`를 함께 확인해야 합니다.
 
