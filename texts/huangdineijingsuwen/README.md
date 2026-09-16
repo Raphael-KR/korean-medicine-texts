@@ -4,8 +4,8 @@
 - Original source file: [황제내경소문.hwpx](../../sources/huangdineijingsuwen/황제내경소문.hwpx)
 - Stable ID: `huangdineijingsuwen`
 - Title in Hanja: 黃帝內經素問
-- Author: 미상
-- Era: 미상
+- Author: 미상(여러 의가의 누적 편찬)
+- Era: 전국~한대(성립·증보)
 - Source archive path: `sources/huangdineijingsuwen/황제내경소문.hwpx`
 - Source format: `hwpx`
 - Source SHA-256: `51184bbee08bc8e07afaecd82619354ce5e8fc8f0faa92fa043e7968f052526f`
@@ -17,3 +17,7 @@
 - Converted at: `2026-05-21T15:21:16.029154+00:00`
 - Conversion tool: `rhwp v0.7.12`
 - Source segments: 81
+
+## 서지 근거
+
+[저자·시대 조사 기록](../../docs/BIBLIOGRAPHY.md)을 참고하세요. 시대는 작품의 성립·저술 시기이며, 보관된 HWPX 입력본의 판본 연대를 뜻하지 않습니다.

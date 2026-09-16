@@ -28,7 +28,7 @@
 
 ## 수록 문헌
 
-전체 목록은 [CATALOG.md](CATALOG.md)와 [catalog.json](catalog.json)을 봐 주세요.
+전체 목록은 [CATALOG.md](CATALOG.md)와 [catalog.json](catalog.json)을 봐 주세요. 저자·시대의 보완 근거와 해석은 [서지 조사 기록](docs/BIBLIOGRAPHY.md)에 정리했습니다.
 
 현재 수록:
 

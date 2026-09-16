@@ -1,12 +1,12 @@
 # 의학입문
 
 - Canonical Markdown: [source.md](source.md)
-- Original source file: [의학입문 원문.hwpx](../../sources/uihagipmun/의학입문 원문.hwpx)
+- Original source file: [의학입문원문.hwpx](../../sources/uihagipmun/의학입문원문.hwpx)
 - Stable ID: `uihagipmun`
 - Title in Hanja: 醫學入門
 - Author: 李梴
-- Era: 미상
-- Source archive path: `sources/uihagipmun/의학입문 원문.hwpx`
+- Era: 명
+- Source archive path: `sources/uihagipmun/의학입문원문.hwpx`
 - Source format: `hwpx`
 - Source SHA-256: `779ae40787dcd554e75e5bd59f952b1768720bf9e72952c9d3623a0c44b0c709`
 - Rights status: `public_domain_classical_text`
@@ -25,3 +25,7 @@
 - AI-readable 품질 게이트 통과, 원본 SHA-256 및 청크 행 범위·재생성 일치 검증 통과
 - 사용자 변환 QC 통과. 개별 원문대조가 완료된 것은 아니므로 `raw_converted` 상태를 유지합니다.
 - 권·편·조문별 전용 구조 청킹은 미검증입니다. 상세 판본과 입력 경위는 미확인입니다.
+
+## 서지 근거
+
+[저자·시대 조사 기록](../../docs/BIBLIOGRAPHY.md)을 참고하세요. 시대는 작품의 성립·저술 시기이며, 보관된 HWPX 입력본의 판본 연대를 뜻하지 않습니다.

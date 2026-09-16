@@ -4,8 +4,8 @@
   "title_ko": "의학입문",
   "title_hanja": "醫學入門",
   "author": "李梴",
-  "era": "",
-  "source_path": "sources/uihagipmun/의학입문 원문.hwpx",
+  "era": "명",
+  "source_path": "sources/uihagipmun/의학입문원문.hwpx",
   "source_format": "hwpx",
   "source_sha256": "779ae40787dcd554e75e5bd59f952b1768720bf9e72952c9d3623a0c44b0c709",
   "source_note": "사용자 제공 의학입문 원문 HWPX. 입력본의 상세 판본과 입력 경위는 미확인. 사용자 변환 QC 통과.",
@@ -58,5 +58,13 @@
     "status": "passed",
     "confirmed_at": "2026-09-16T16:44:50.502086+00:00",
     "scope": "사용자 변환 품질 QC 및 commit/push 승인. 개별 원문대조 완료를 뜻하지 않음."
-  }
+  },
+  "bibliographic_references": [
+    {
+      "title": "CiNii Books: 編註醫学入門 7巻首1巻",
+      "url": "https://ci.nii.ac.jp/ncid/BB18438829",
+      "accessed_on": "2026-09-17",
+      "scope": "작품의 저자 및 성립 시대. 저장소 HWPX의 저본·판본 동일성을 확인한 것은 아님."
+    }
+  ]
 }

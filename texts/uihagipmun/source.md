@@ -2,7 +2,7 @@
 id: "uihagipmun"
 title: "의학입문"
 title_hanja: "醫學入門"
-source: "../../sources/uihagipmun/의학입문 원문.hwpx"
+source: "../../sources/uihagipmun/의학입문원문.hwpx"
 source_format: "hwpx"
 source_sha256: "779ae40787dcd554e75e5bd59f952b1768720bf9e72952c9d3623a0c44b0c709"
 converted_at: "2026-09-16T16:42:14.929599+00:00"
